@@ -1,0 +1,92 @@
+.hero__section {
+  background: var(--hero-bg);
+}
+
+.hero__section h2 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin: 20px 0;
+  color: var(--primary-color);
+}
+
+.hero__section p {
+  color: var(--primary-color);
+  line-height: 28px;
+}
+
+.hero__section p:nth-child(1) {
+  font-weight: 600;
+}
+
+.buy__btn {
+  outline: none;
+  border: none;
+  background: var(--primary-color);
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 40px;
+}
+.auth__btn {
+  background: var(--card-bg-01);
+  color: var(--primary-color);
+}
+
+.buy__btn a:hover {
+  color: #fff;
+}
+
+.hero__content {
+  padding-top: 45px;
+}
+
+.timer__count {
+  height: 300px;
+  background: var(--primary-color);
+}
+
+.timer__count img {
+  height: 70% !important;
+  width: 70% !important;
+  object-fit: contain;
+}
+
+.store__btn {
+  font-weight: 600;
+  background: #fff;
+  color: var(--primary-color);
+}
+
+.store__btn a:hover {
+  color: var(--primary-color);
+}
+
+@media only screen and (max-width: 992px) {
+  .counter__img img {
+    display: none;
+  }
+  .clock__top-content {
+    text-align: center;
+  }
+  .count__down-col {
+    text-align: center;
+  }
+}
+.slide {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+.slide-text {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.counter-img {
+  width: 400px;
+  height: 400px;
+}

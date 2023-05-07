@@ -1,0 +1,49 @@
+.auth__form {
+  background: var(--primary-color);
+  padding: 40px;
+  border-radius: 5px;
+}
+
+.auth__btn {
+  background: #fff !important;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+.auth__form p {
+  margin-top: 30px;
+}
+.auth__form p a {
+  color: rgba(255, 255, 255, 0.729);
+}
+
+.auth__form input {
+  color: #333;
+  cursor: pointer;
+  width: 80%;
+  padding: 10px 20px;
+}
+
+.gender {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  column-gap: 2rem;
+  width: 50%;
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+  padding: 8px 20px;
+}
+
+.datepick {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.datepick label {
+  color: white;
+}
+.gender-label {
+  display: flex;
+  color: white;
+}

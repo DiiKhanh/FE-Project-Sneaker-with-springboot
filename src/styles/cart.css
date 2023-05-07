@@ -1,0 +1,12 @@
+.table tr td img{
+  width: 80px;
+  height: 80px !important;
+  object-fit: cover;
+}
+
+td i{
+  cursor: pointer;
+}
+td, th{
+  color: var(--primary-color);
+}

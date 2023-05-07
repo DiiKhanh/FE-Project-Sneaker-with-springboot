@@ -1,0 +1,19 @@
+.add__product {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.add__product .form__group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.add__product .form__group span {
+  display: inline-block;
+  width: 120px;
+}
+
+.add__product .form__group input {
+  padding: 10px 20px;
+}

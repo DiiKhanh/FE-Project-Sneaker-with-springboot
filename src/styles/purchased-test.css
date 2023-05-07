@@ -1,0 +1,69 @@
+.order-item {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--primary-color);
+  height: 0;
+  display: none;
+  opacity: 0;
+  /* display: flex; */
+}
+
+.order-item:first-child,
+.items-container.active .order-item {
+  display: flex;
+  height: auto;
+  opacity: 1;
+}
+
+.order-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  margin-right: 16px;
+}
+
+.order-container {
+  margin-bottom: 60px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8.5px);
+  -webkit-backdrop-filter: blur(8.5px);
+  padding: 15px 30px;
+}
+
+.order-container h5 {
+  margin: 12px 6px;
+}
+
+.order-container h5:last-child {
+  align-self: flex-end;
+}
+
+.see-more {
+  font-weight: 600;
+  position: absolute;
+  left: 50%;
+  bottom: 20px;
+  padding: 4px 16px;
+  border-radius: 16px;
+  transform: translateX(-50%);
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+.see-more:hover {
+  color: var(--bs-white);
+  background-color: var(--primary-color);
+}
+.purchased-text {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px;
+}
+.purchased-text h6 {
+  font-size: 24px;
+}

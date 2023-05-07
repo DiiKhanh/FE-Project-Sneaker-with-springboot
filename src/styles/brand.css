@@ -1,0 +1,17 @@
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.brand-img {
+  width: 120px;
+  opacity: 0.5;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.brand-img:hover {
+  opacity: 1;
+}
