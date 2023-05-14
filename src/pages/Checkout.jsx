@@ -6,12 +6,67 @@ import "../styles/checkout.css";
 import { useDispatch, useSelector } from "react-redux";
 import { clearCart } from "../redux/slices/cartSlice";
 import { toast } from "react-toastify";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import { addOrder } from "../redux/slices/purchasedSlice";
+// import ModalPopup from "../components/UI/ModalPopup";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
 const Checkout = () => {
   const { cartItems, totalQuantity, totalAmount } = useSelector(
     (state) => state.cart
   );
+  const [vnpay, setVnpay] = useState("");
+  const [testID, setTestID] = useState(4);
+  const [modal, setModal] = useState(false);
+  const user = useSelector((state) => state.auth?.currentUser);
   const dispatch = useDispatch();
+  const paymentOnline = async (money) => {
+    const res = await axios.get(
+      `http://localhost:8080/api/payment_online/create_payment/${money}`,
+      {
+        headers: {
+          Authorization: `Bearer ${user?.accessToken}`,
+        },
+      }
+    );
+    setModal(!modal);
+
+    setVnpay(res.data.data);
+    if (cartItems.length === 0) return;
+    else {
+      dispatch(clearCart());
+      dispatch(addOrder(createOrder(cartItems)));
+      setTestID(testID + 1);
+      // dispatch(addOrder(createOrder(cartItems)));
+      // setTestID(testID + 1);
+      // checkOutLink.current.click();
+      // setTimeout(() => navigate("/checkout"), 2000);
+    }
+  };
+  const toggle = () => setModal(!modal);
+
+  const randomId = () => {
+    return (
+      Date.now().toString(36) +
+      Math.floor(
+        Math.pow(10, 12) + Math.random() * 9 * Math.pow(10, 12)
+      ).toString(36)
+    );
+  };
+
+  const createOrder = (cartItems) => {
+    const total = cartItems.reduce(
+      (accumulateValue, item) => accumulateValue + item.price * item.quantity,
+      0
+    );
+    return {
+      order_id: randomId(),
+      orderItems: cartItems,
+      totalAmount: total,
+    };
+  };
 
   const checkOut = () => {
     // Send order data to server (x)
@@ -19,6 +74,8 @@ const Checkout = () => {
     else {
       toast.success("Đặt hàng thành công");
       dispatch(clearCart());
+      dispatch(addOrder(createOrder(cartItems)));
+      setTestID(testID + 1);
       // dispatch(addOrder(createOrder(cartItems)));
       // setTestID(testID + 1);
       // checkOutLink.current.click();
@@ -82,14 +139,53 @@ const Checkout = () => {
                   Thành tiền: <span>${totalAmount}</span>
                 </h4>
                 <button className="buy__btn auth__btn w-100" onClick={checkOut}>
-                  Đặt hàng
+                  Thanh toán khi nhận hàng
                 </button>
+                <button
+                  className="buy__btn auth__btn w-100"
+                  onClick={() => paymentOnline(Number(totalAmount * 500))}
+                >
+                  Thanh toán VNPay
+                </button>
+                {/* {vnpay && (
+                  <a href={vnpay} target="_blank">
+                    Đến thanh toán
+                  </a>
+                )} */}
+                {modal && (
+                  <ModalPopup vnpay={vnpay} toggle={toggle} modal={modal} />
+                )}
               </div>
             </Col>
           </Row>
         </Container>
       </section>
     </Helmet>
+  );
+};
+
+const ModalPopup = (props) => {
+  console.log(props);
+
+  return (
+    <div>
+      <Modal isOpen={props.modal} toggle={props.toggle} scrollable={true}>
+        <ModalHeader toggle={props.toggle}>
+          Xác nhận thanh toán VNPay
+        </ModalHeader>
+        <ModalBody>{`Bạn sẽ được dẫn đến trang thanh toán VNPay vui lòng xác nhận`}</ModalBody>
+        <ModalFooter>
+          <Button color="primary">
+            <a href={props.vnpay} target="_blank" onClick={props.toggle}>
+              Xác nhận
+            </a>
+          </Button>{" "}
+          <Button color="secondary" onClick={props.toggle}>
+            Hủy
+          </Button>
+        </ModalFooter>
+      </Modal>
+    </div>
   );
 };
 

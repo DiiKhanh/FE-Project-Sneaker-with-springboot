@@ -10,7 +10,7 @@ export const signIn = (data) =>
       });
       resolve(response);
     } catch (error) {
-      reject(error);
+      reject({ status: 401 });
     }
   });
 
@@ -24,7 +24,7 @@ export const signUp = (data) =>
       });
       resolve(response);
     } catch (error) {
-      reject(error);
+      reject({ status: 401 });
     }
   });
 

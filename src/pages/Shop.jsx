@@ -64,7 +64,7 @@ const Shop = () => {
               <div className="search__box">
                 <input
                   type="text"
-                  placeholder="Search ..."
+                  placeholder="Tìm kiếm tên sản phẩm ..."
                   onChange={handleSearch}
                 />
                 <span>

@@ -14,6 +14,9 @@ import {
   deleteProduct,
   updateProduct,
 } from "../redux/slices/ProductSlice";
+import ModalPopup from "../components/UI/ModalPopup";
+import { Button } from "reactstrap";
+import { getAllProductTest } from "../redux/slices/ProductSlice";
 // import Loading from "../components/UI/Loading";
 // import * as apis from "../api";
 const AddProduct = () => {
@@ -34,8 +37,8 @@ const AddProduct = () => {
   const dispatch = useDispatch();
   // const cartItems = useSelector((state) => state.addProduct?.cartItems);
   const cartItems = useSelector((state) => state.product?.cartItems);
+  const testItems = useSelector((state) => state.product?.testItems);
   const clickEdit = (data) => {
-    console.log(data);
     setEditMode(data);
   };
   useEffect(() => {
@@ -48,6 +51,16 @@ const AddProduct = () => {
     setEnterBrand(editMode?.brandName || "");
     setEnterDesigner(editMode?.designer || "");
   }, [editMode]);
+
+  const getAll = async () => {
+    const res = await axios.get("http://localhost:8080/api/product/all");
+    // console.log(res.data.data);
+    dispatch(getAllProductTest(res.data.data));
+  };
+
+  useEffect(() => {
+    getAll();
+  }, [testItems]);
 
   useEffect(() => {
     cartItems.length === 0 ? setIsEmpty(true) : setIsEmpty(false);
@@ -306,7 +319,7 @@ const AddProduct = () => {
             </Col>
           )}
           <Col lg="6">
-            {cartItems.length === 0 ? (
+            {testItems.length === 0 ? (
               <h2 className="fs-4 text-center mt-5">
                 Chưa có sản phầm nào được thêm
               </h2>
@@ -325,7 +338,7 @@ const AddProduct = () => {
                   </thead>
 
                   <tbody>
-                    {cartItems.map((item, idx) => (
+                    {testItems.map((item, idx) => (
                       <Tr key={idx} item={item} clickEdit={clickEdit} />
                     ))}
                   </tbody>
@@ -340,16 +353,19 @@ const AddProduct = () => {
 };
 
 const Tr = ({ item, clickEdit }) => {
+  const [modal, setModal] = useState(false);
+  const toggle = () => setModal(!modal);
   const user = useSelector((state) => state.auth?.currentUser);
   const dispatch = useDispatch();
   const [edit, setEdit] = useState(true);
-  const deleteProduct1 = async () => {
+  const deleteProducts = async () => {
     const data = {
       id: item.id,
       token: user.accessToken,
     };
     const res = await dispatch(deleteProduct(data)).unwrap();
     toast.success("Xóa sản phẩm thành công!");
+    setModal(!modal);
   };
 
   const editProduct = (e) => {
@@ -367,7 +383,7 @@ const Tr = ({ item, clickEdit }) => {
   };
 
   return (
-    <tr>
+    <tr className={`${!edit ? "active-edit" : ""}`}>
       <td>
         <img src={item.imgUrl} alt="product" />
       </td>
@@ -380,11 +396,24 @@ const Tr = ({ item, clickEdit }) => {
       </td>
       <td>{item.quantity}</td>
       <td>
-        <motion.i
+        {/* <motion.i
           whileTap={{ scale: 1.2 }}
-          onClick={deleteProduct1}
+          onClick={deleteProducts}
           className="ri-delete-bin-line"
-        ></motion.i>
+        ></motion.i> */}
+        <Button
+          color="danger"
+          onClick={toggle}
+          className="ri-delete-bin-line"
+        ></Button>
+        {modal && (
+          <ModalPopup
+            delete={deleteProducts}
+            toggle={toggle}
+            modal={modal}
+            text="sản phẩm"
+          />
+        )}
       </td>
       <td>
         <motion.i

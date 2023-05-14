@@ -24,7 +24,7 @@ const Signup = () => {
   //   phone: null,
   //   gender: "",
   // });
-  const [birth, setBirth] = useState(new Date().toISOString());
+  const [birth, setBirth] = useState();
   const [fmtValue, setFmtValue] = useState(undefined);
   const handleChange = (value, formattedValue) => {
     setBirth(value);
@@ -33,6 +33,7 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  // const user = useSelector((state) => state.auth?.currentUser);
   // on change
   // const handleInputChange = (e) => {
   //   setDataForm({ ...dataForm, [e.target.name]: e.target.value });
@@ -53,7 +54,6 @@ const Signup = () => {
     if (!res?.status) {
       toast.success("Đăng ký tài khoản thành công!");
       setLoading(false);
-
       navigate("/login");
     } else {
       toast.error("Có lỗi khi đăng ký!");

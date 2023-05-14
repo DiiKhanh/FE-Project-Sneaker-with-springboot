@@ -35,15 +35,7 @@ const Header = () => {
   const profileRef = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const currentUser = useSelector((state) => state.auth.currentUser);
-
-  // console.log(currentUser);
-  // wait be return data user
-  // const currentUser = {
-  //   id: 1,
-  //   roles: "user",
-  // };
-
+  const currentUser = useSelector((state) => state.auth?.currentUser);
   const { totalQuantity } = useSelector((state) => state.cart);
 
   const stickyHeaderFunc = () => {
@@ -144,12 +136,21 @@ const Header = () => {
                   alt="avt-user"
                   onClick={toggleProfile}
                 />
+                <span
+                  className="mx-3"
+                  onClick={toggleProfile}
+                  style={{
+                    cursor: "pointer",
+                  }}
+                >
+                  {currentUser?.username}
+                </span>
                 <div
                   className="profile__actions"
                   ref={profileRef}
                   onClick={toggleProfile}
                 >
-                  {currentUser ? (
+                  {currentUser?.username ? (
                     <div className="login__success">
                       <motion.span
                         whileHover={{ scale: 1.1 }}

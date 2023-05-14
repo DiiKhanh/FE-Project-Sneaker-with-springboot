@@ -65,8 +65,8 @@ const Cart = () => {
     else {
       toast.success("Chuyển tới trang thanh toán");
       // dispatch(clearCart());
-      dispatch(addOrder(createOrder(cartItems)));
-      setTestID(testID + 1);
+      // dispatch(addOrder(createOrder(cartItems)));
+      // setTestID(testID + 1);
       // checkOutLink.current.click();
       setTimeout(() => navigate("/checkout"), 2000);
     }

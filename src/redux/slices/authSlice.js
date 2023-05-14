@@ -6,11 +6,9 @@ export const signIn = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       const response = await api.signIn(data);
-      // console.log(response);
       return response.data;
     } catch (error) {
-      // console.log(error.response);
-      return error.response;
+      return error;
     }
   }
 );
@@ -22,7 +20,7 @@ export const signUp = createAsyncThunk(
       const response = await api.signUp(data);
       return response.data;
     } catch (error) {
-      return error.response;
+      return error;
     }
   }
 );
@@ -34,7 +32,7 @@ export const logOutAuth = createAsyncThunk(
       const response = await api.logOut();
       return response.data;
     } catch (error) {
-      return error.response;
+      return error;
     }
   }
 );

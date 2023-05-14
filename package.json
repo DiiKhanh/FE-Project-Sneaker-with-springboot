@@ -25,8 +25,8 @@
     "react-toastify": "^9.1.1",
     "reactstrap": "^9.1.6",
     "reactstrap-date-picker": "^1.0.9",
-    "remixicon": "^2.5.0",
-    "uuidv4": "^6.2.13"
+    "redux-persist": "^6.0.0",
+    "remixicon": "^2.5.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",
