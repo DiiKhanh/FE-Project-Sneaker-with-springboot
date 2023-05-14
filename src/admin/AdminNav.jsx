@@ -4,8 +4,8 @@ import { NavLink } from "react-router-dom";
 import avt from "../assets/images/user-icon.png";
 import logo from "../assets/images/eco-logo.png";
 import "./AdminNav.css";
-
 import { motion } from "framer-motion";
+import { useSelector } from "react-redux";
 
 const admin_nav = [
   {
@@ -35,6 +35,7 @@ const admin_nav = [
 ];
 
 const AdminNav = () => {
+  const user = useSelector((state) => state.auth?.currentUser);
   const profileRef = useRef(null);
   const handleLogout = () => {};
   const handleProfile = () => {};
@@ -65,12 +66,17 @@ const AdminNav = () => {
                 </span>
                 {/* <img src={avt} alt="avatar" /> */}
                 <div className="profile">
-                  <motion.img
-                    whileTap={{ scale: 1.2 }}
-                    src={avt}
-                    alt="avt-user"
-                    onClick={toggleProfile}
-                  />
+                  <div>
+                    <motion.img
+                      whileTap={{ scale: 1.2 }}
+                      src={avt}
+                      alt="avt-user"
+                      onClick={toggleProfile}
+                    />
+                    <span className="mx-3 text-white" onClick={toggleProfile}>
+                      {user.username}
+                    </span>
+                  </div>
                   <div
                     className="profile__actions"
                     ref={profileRef}

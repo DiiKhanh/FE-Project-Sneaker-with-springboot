@@ -20,6 +20,7 @@ import UserNotify from "../components/User/UserNotify";
 import Dashboard from "../admin/Dashboard";
 import UserDashboard from "../admin/user/UserDashboard";
 import Loading from "../components/UI/Loading";
+import ProductDetailsTest from "../pages/ProductDetailsTest";
 
 const Routers = () => {
   return (
@@ -32,7 +33,7 @@ const Routers = () => {
       <Route path="cart" element={<Cart />} />
 
       {/* <Route
-        path="/*"
+        path="/checkout"
         element={
           <ProtectedRoute>
             <Checkout />
@@ -70,7 +71,10 @@ const Routers = () => {
         </Route>
       </Route>
 
-      <Route path="*" element={<NotFound />} />
+      <Route path="test-product" element={<TestProduct />} />
+      <Route path="testshop/:id" element={<ProductDetailsTest />} />
+
+      <Route path="404" element={<NotFound />} />
     </Routes>
   );
 };

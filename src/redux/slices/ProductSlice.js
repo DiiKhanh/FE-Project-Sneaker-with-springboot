@@ -7,6 +7,7 @@ const initialState = {
   cartItems: localStorage.getItem("itemsAdded-test")
     ? JSON.parse(localStorage.getItem("itemsAdded-test"))
     : [],
+  testItems: [],
 };
 
 export const fetchAllProduct = createAsyncThunk(
@@ -75,7 +76,11 @@ export const updateProduct = createAsyncThunk(
 const productSlice = createSlice({
   name: "product",
   initialState,
-  reducers: {},
+  reducers: {
+    getAllProductTest: (state, action) => {
+      state.testItems = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchAllProduct.fulfilled, (state, action) => {
@@ -113,3 +118,4 @@ const productSlice = createSlice({
 });
 
 export default productSlice.reducer;
+export const { getAllProductTest } = productSlice.actions;

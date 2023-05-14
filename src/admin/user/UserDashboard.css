@@ -1,0 +1,20 @@
+.manager {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.manager-user {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.manager-user i {
+  font-size: 32px;
+}
+
+.search-user {
+  width: 300px;
+}
