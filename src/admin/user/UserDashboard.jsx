@@ -8,23 +8,51 @@ import { toast } from "react-toastify";
 import { allUsers } from "../../redux/slices/UserSlice";
 import "./UserDashboard.css";
 import ModalPopup from "../../components/UI/ModalPopup";
-import { Button } from "reactstrap";
+import { Button, Table } from "reactstrap";
+import ExportCSV from "../../utils/ExportCSV";
+import ReactPaginate from "react-paginate";
+
 const UserDashboard = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth?.currentUser);
   const users = useSelector((state) => state.user?.users);
+  const totalPages = useSelector((state) => state.user?.totalPages);
+  const [usersExport, setUsersExport] = useState([]);
+  const newAll = usersExport?.map((obj) => {
+    const newObj = { ...obj };
+    delete newObj.password;
+    return newObj;
+  });
   const [searchUser, setSearchUser] = useState(null);
   const newUsers = users?.filter((item) => item.id !== user.id);
-  const fetchAllUser = async () => {
-    const res = await axios.get("http://localhost:8080/api/user/all", {
+
+  const fetchAllUserToExport = async () => {
+    const res = await axios.get(`http://localhost:8080/api/user/all-user`, {
       headers: {
         Authorization: `Bearer ${user?.accessToken}`,
       },
     });
-    dispatch(allUsers(res.data.data));
+    setUsersExport(res.data.data);
+  };
+
+  const fetchAllUser = async (page) => {
+    const res = await axios.get(
+      `http://localhost:8080/api/user/all?page=${page}`,
+      {
+        headers: {
+          Authorization: `Bearer ${user?.accessToken}`,
+        },
+      }
+    );
+    dispatch(allUsers(res.data));
   };
   useEffect(() => {
-    fetchAllUser();
+    fetchAllUser(0);
+    fetchAllUserToExport();
+    // const timer = setInterval(() => {
+    //   fetchAllUser();
+    // }, 1000);
+    // return () => clearInterval(timer);
   }, [dispatch]);
 
   const handleSearch = (e) => {
@@ -35,8 +63,13 @@ const UserDashboard = () => {
     setSearchUser(searchedValue);
   };
 
+  const handlePageChange = (e) => {
+    fetchAllUser(e.selected);
+    setSearchUser(null);
+  };
+
   return (
-    <section>
+    <section className="manager-section">
       <Container>
         <div className="mt-3 manager">
           <div className="manager-user">
@@ -45,51 +78,75 @@ const UserDashboard = () => {
             </div>
             <h4>Quản lý người dùng</h4>
           </div>
-          <div className="search__box search-user">
-            <input
-              type="text"
-              placeholder="Tìm kiếm username"
-              onChange={handleSearch}
-            />
-            <span>
+          <div className="search-user">
+            <div className="search-box">
+              <input
+                type="text"
+                placeholder="Tìm kiếm username"
+                onChange={handleSearch}
+              />
+
               <i className="ri-search-line"></i>
-            </span>
+            </div>
+
+            <div className="btn-file">
+              <ExportCSV csvData={newAll} fileName={"all-user"} />
+            </div>
           </div>
         </div>
         <Row>
           <div className="mt-5">
-            {newUsers.length === 0 ? (
+            {newUsers?.length === 0 ? (
               <h2 className="fs-4 text-center">
                 Chưa có người dùng
                 <Loading />
               </h2>
             ) : (
-              <table className="table bordered">
-                <thead>
-                  <tr>
-                    <th>No.</th>
-                    <th>Username</th>
-                    <th>E-Mail</th>
-                    <th>Địa chỉ</th>
-                    <th>Số điện thoại</th>
-                    <th>Giới tính</th>
-                    <th>Ngày sinh</th>
-                    {/* <th>Vai trò</th> */}
-                    <th>Xóa</th>
-                    <th>Sửa</th>
-                    <th>Chặn</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {searchUser
-                    ? searchUser.map((item, idx) => (
-                        <Tr data={item} key={idx} idx={idx} />
-                      ))
-                    : newUsers.map((item, idx) => (
-                        <Tr data={item} key={idx} idx={idx} />
-                      ))}
-                </tbody>
-              </table>
+              <>
+                <Table hover className="table bordered">
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>Username</th>
+                      <th>E-Mail</th>
+                      <th>Địa chỉ</th>
+                      <th>Số điện thoại</th>
+                      <th>Giới tính</th>
+                      <th>Ngày sinh</th>
+                      {/* <th>Vai trò</th> */}
+                      <th>Xóa</th>
+                      <th>Sửa</th>
+                      <th>Chặn</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {searchUser
+                      ? searchUser?.map((item, idx) => (
+                          <Tr data={item} key={idx} idx={idx} />
+                        ))
+                      : newUsers?.map((item, idx) => (
+                          <Tr data={item} key={idx} idx={idx} />
+                        ))}
+                  </tbody>
+                </Table>
+                <ReactPaginate
+                  previousLabel="Previous"
+                  nextLabel="Next"
+                  pageClassName="page-item"
+                  pageLinkClassName="page-link"
+                  previousClassName="page-item"
+                  previousLinkClassName="page-link"
+                  nextClassName="page-item"
+                  nextLinkClassName="page-link"
+                  breakLabel="..."
+                  breakClassName="page-item"
+                  breakLinkClassName="page-link"
+                  pageCount={totalPages}
+                  onPageChange={handlePageChange}
+                  containerClassName="pagination"
+                  activeClassName="active"
+                />
+              </>
             )}
           </div>
         </Row>
@@ -111,7 +168,7 @@ const Tr = ({ data, idx }) => {
         },
       }
     );
-    dispatch(allUsers(res.data.data));
+    dispatch(allUsers(res.data));
     toast.success("Xóa người dùng thành công!");
     setModal(!modal);
   };

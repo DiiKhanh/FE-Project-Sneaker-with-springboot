@@ -34,16 +34,17 @@ const Checkout = () => {
     setModal(!modal);
 
     setVnpay(res.data.data);
-    if (cartItems.length === 0) return;
-    else {
-      dispatch(clearCart());
-      dispatch(addOrder(createOrder(cartItems)));
-      setTestID(testID + 1);
-      // dispatch(addOrder(createOrder(cartItems)));
-      // setTestID(testID + 1);
-      // checkOutLink.current.click();
-      // setTimeout(() => navigate("/checkout"), 2000);
-    }
+    checkOut();
+    // if (cartItems.length === 0) return;
+    // else {
+    //   dispatch(clearCart());
+    //   dispatch(addOrder(createOrder(cartItems)));
+    //   setTestID(testID + 1);
+    //   // dispatch(addOrder(createOrder(cartItems)));
+    //   // setTestID(testID + 1);
+    //   // checkOutLink.current.click();
+    //   // setTimeout(() => navigate("/checkout"), 2000);
+    // }
   };
   const toggle = () => setModal(!modal);
 
@@ -165,8 +166,6 @@ const Checkout = () => {
 };
 
 const ModalPopup = (props) => {
-  console.log(props);
-
   return (
     <div>
       <Modal isOpen={props.modal} toggle={props.toggle} scrollable={true}>
