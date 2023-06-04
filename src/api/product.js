@@ -9,7 +9,7 @@ export const getAllProducts = () =>
       });
       resolve(response);
     } catch (error) {
-      reject(error);
+      reject(error.message);
     }
   });
 
@@ -22,7 +22,7 @@ export const getProduct = (id) =>
       });
       resolve(response);
     } catch (error) {
-      reject(error);
+      reject(error.message);
     }
   });
 
@@ -33,14 +33,13 @@ export const addProduct = (data, token) =>
         url: `/api/product/add`,
         method: "post",
         headers: {
-          // "Authorization": token,
           Authorization: `Bearer ${token}`,
         },
         data,
       });
       resolve(response);
     } catch (error) {
-      reject(error);
+      reject(error.message);
     }
   });
 
@@ -56,7 +55,7 @@ export const deleteProduct = (id, token) =>
       });
       resolve(response);
     } catch (error) {
-      reject(error);
+      reject(error.message);
     }
   });
 
@@ -73,6 +72,24 @@ export const updateProduct = (id, data, token) =>
       });
       resolve(response);
     } catch (error) {
-      reject(error);
+      reject(error.message);
+    }
+  });
+
+export const getProductsPage = (page) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axios({
+        url: `/api/all-products?page=${page}`,
+        method: "get",
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers": "*",
+          "Access-Control-Allow-Credentials": "true",
+        },
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error.message);
     }
   });

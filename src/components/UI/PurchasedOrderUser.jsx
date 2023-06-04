@@ -36,7 +36,13 @@ export default function PurchasedOrderUser({ order }) {
         </span>
       )}
       <hr></hr>
-      <h5>Đơn giá: $ {order.totalAmount}</h5>
+      <h5>
+        Đơn giá:{" "}
+        {order.totalAmount?.toLocaleString("it-IT", {
+          style: "currency",
+          currency: "VND",
+        })}
+      </h5>
     </li>
   );
 }

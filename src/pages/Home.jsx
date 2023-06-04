@@ -6,51 +6,36 @@ import "../styles/home.css";
 import { Container, Col, Row } from "reactstrap";
 import Services from "../services/Services";
 import ProductsList from "../components/UI/ProductsList";
-import products from "../assets/data/products";
 import Clock from "../components/UI/Clock";
 import Slideshow from "../components/UI/Slideshow";
 import Brand from "../components/UI/Brand";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllProduct } from "../redux/slices/ProductSlice";
 import { toast } from "react-toastify";
 import * as api from "../api";
 import { logOutAuth } from "../redux/slices/authSlice";
+import { TypeAnimation } from "react-type-animation";
+import { fetchAllProduct } from "../redux/slices/managerProductSlice";
+
 const Home = () => {
-  const [trendingProducts, setTrendingProducts] = useState([]);
-  const [bestSalesProducts, setBestSalesProducts] = useState([]);
-  const [popularProducts, setPopularProducts] = useState([]);
-  const cartItems = useSelector((state) => state.addProduct?.cartItems);
-  // const products = useSelector((state) => state.product?.products);
+  const products = useSelector((state) => state.managerProduct?.products);
 
-  // const dispatch = useDispatch();
+  const trendingProducts = useSelector(
+    (state) => state.managerProduct?.trendingProducts
+  );
+  const bestSalesProducts = useSelector(
+    (state) => state.managerProduct?.bestSalesProducts
+  );
+  const popularProducts = useSelector(
+    (state) => state.managerProduct?.popularProducts
+  );
+  const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   const fetch = async () => {
-  //     try {
-  //       const res = await dispatch(fetchAllProduct()).unwrap();
-  //     } catch (error) {
-  //       toast.error("something wrong");
-  //     }
-  //   };
-  //   fetch();
-  // }, [dispatch]);
-
+  const fetchAllProducts = () => {
+    dispatch(fetchAllProduct());
+  };
   useEffect(() => {
-    const filteredTrendingProducts = products.filter(
-      (item) => item.category[0] === "basketball"
-    );
-
-    const filteredBestSalesProducts = products.filter(
-      (item) => item.category[0] === "running"
-    );
-
-    const filteredPopularProducts = products.filter(
-      (item) => item.category[0] === "lifestyle"
-    );
-    setTrendingProducts(filteredTrendingProducts);
-    setBestSalesProducts(filteredBestSalesProducts);
-    setPopularProducts(filteredPopularProducts.slice(0, 8));
-  }, [products]);
+    fetchAllProducts();
+  }, []);
 
   const year = new Date().getFullYear();
 
@@ -61,10 +46,20 @@ const Home = () => {
           <Row>
             <Col lg="6" md="6">
               <div className="hero__content">
-                <p className="hero__subtitle">
-                  Sản phẩm nổi bật trong năm {year}
-                </p>
-                <h2>Giày tốt hơn, cho phong cách tốt nhất</h2>
+                <TypeAnimation
+                  sequence={[`Sản phẩm nổi bật trong năm ${year}`, 1000]}
+                  wrapper="p"
+                  cursor={true}
+                  repeat={Infinity}
+                  className="hero__subtitle"
+                />
+                <TypeAnimation
+                  sequence={["Giày tốt hơn, cho phong cách tốt nhất", 1000]}
+                  wrapper="h2"
+                  cursor={true}
+                  speed={60}
+                  repeat={Infinity}
+                />
                 <p>
                   Shop Sneaker là một trong những thương hiệu bán lẻ uy tín các
                   sản phầm giày chính hãng tại Việt Nam. Được thành lập vào năm
@@ -149,7 +144,7 @@ const Home = () => {
           </Row>
         </Container>
       </section>
-      <section className="popular__category">
+      {/* <section className="popular__category">
         <Container>
           <Row>
             <Col lg="12" className="text-center mb-5">
@@ -158,7 +153,7 @@ const Home = () => {
             <ProductsList data={cartItems} />
           </Row>
         </Container>
-      </section>
+      </section> */}
     </Helmet>
   );
 };

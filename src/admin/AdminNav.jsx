@@ -74,7 +74,7 @@ const AdminNav = () => {
                       onClick={toggleProfile}
                     />
                     <span className="mx-3 text-white" onClick={toggleProfile}>
-                      {user.username}
+                      {user?.username}
                     </span>
                   </div>
                   <div

@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { Container, Row, Col } from "reactstrap";
-import products from "../assets/data/products";
+import { Link, useParams } from "react-router-dom";
+import { Container, Row, Col, Breadcrumb, BreadcrumbItem } from "reactstrap";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/CommonSection";
 import "../styles/product-details.css";
@@ -13,9 +12,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { cartActions } from "../redux/slices/cartSlice";
 import size from "../assets/data/sizeArr";
+import axios from "axios";
+import SizeModal from "../components/UI/SizeModal";
 
 const ProductDetails = () => {
-  const cartItems = useSelector((state) => state.addProduct?.cartItems);
+  //
+  const [modal, setModal] = useState(false);
+  const toggle = () => setModal(!modal);
+
+  //
   const [tab, setTab] = useState("desc");
   const [rating, setRating] = useState(null);
   const reviewUser = useRef("");
@@ -24,30 +29,31 @@ const ProductDetails = () => {
   const [reviews, setReviews] = useState([
     { rating: 4.6, text: "sản phẩm đẹp", user: "Khánh" },
   ]);
-  // const reviews = {
-  //   rating: 4.6,
-  //   text: "Lorem ipsum dolor sit amet consectetur adipisicing elit",
-  // };
+  const [item, setItem] = useState({});
+  const allProducts = useSelector((state) => state.managerProduct?.products);
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const res = await axios.get(`http://localhost:8080/api/product/${id}`);
+      setItem(res.data.data);
+    };
+    fetchProduct();
+  }, [id]);
 
-  const product =
-    products.find((item) => item.id === Number(id)) ||
-    cartItems.find((item) => item.id === id);
-  // const reviews = "reviews";
-  const { grid_picture_url, name, retail_price_cents, category } = product;
-  const relatedProducts = products.filter(
-    (item) => item.category[0] === category[0]
+  const { imgUrl, productName, productPrice, category } = item;
+  const relatedProducts = allProducts?.filter(
+    (data) => data.category === item?.category && data.id !== item?.id
   );
   const dispatch = useDispatch();
   const addToCart = () => {
     dispatch(
       cartActions.addItem({
-        id: product.id,
-        productName: product.name || product.productName,
-        price: product.retail_price_cents || product.price,
-        imgUrl: product.grid_picture_url || product.image,
+        id: item?.id,
+        productName: item.name || item?.productName,
+        price: item.retail_price_cents || item?.productPrice,
+        imgUrl: item?.grid_picture_url || item?.imgUrl,
       })
     );
-    toast.success("Product added successfully");
+    toast.success("Thêm sản phầm vào giỏ hàng thành công!");
   };
   const submitHandler = (e) => {
     e.preventDefault();
@@ -59,30 +65,41 @@ const ProductDetails = () => {
       rating,
     };
     setReviews([...reviews, reviewObj]);
-    toast.success("Review submitted");
+    toast.success("Đánh giá đã được gửi");
   };
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [product]);
+  }, [item]);
   const [selectIdx, setSelectIdx] = useState(-1);
 
   return (
-    <Helmet title={name || product.productName}>
-      <CommonSection title={name || product.productName} />
+    <Helmet title={productName}>
+      <CommonSection title={productName} />
       <section>
+        <div style={{ marginLeft: "300px" }}>
+          <Breadcrumb>
+            <BreadcrumbItem>
+              <Link style={{ color: "blue" }} to="/home">
+                Home
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem>
+              <Link style={{ color: "blue" }} to="/shop">
+                Shop
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem active>{item?.productName}</BreadcrumbItem>
+          </Breadcrumb>
+        </div>
         <Container>
           <Row>
             <Col lg="6">
-              <img
-                src={grid_picture_url || product.image}
-                className="product__detail-img"
-                alt="product"
-              />
+              <img src={imgUrl} className="product__detail-img" alt="product" />
             </Col>
             <Col lg="6">
               <div className="product__details">
-                <h2>{name || product.productName}</h2>
+                <h2>{productName}</h2>
                 <div className="product__rating d-flex align-items-center gap-5 mb-3">
                   <div>
                     <span>
@@ -109,9 +126,12 @@ const ProductDetails = () => {
                 </div>
                 <div className="d-flex align-items-center gap-5">
                   <span className="product__price">
-                    ${retail_price_cents || product.price}
+                    {item.productPrice?.toLocaleString("it-IT", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
                   </span>
-                  <span>Thể loại: {category[0].toUpperCase()}</span>
+                  <span>Thể loại: {item.category}</span>
                 </div>
                 <div className="mt-4">
                   <div className="pd">
@@ -168,7 +188,14 @@ const ProductDetails = () => {
                     })}
                   </div>
                 </div>
-
+                <div
+                  className="mt-5"
+                  style={{ color: "blue", cursor: "pointer" }}
+                  onClick={() => setModal(true)}
+                >
+                  Bảng Quy Đổi Kích Cỡ{" >"}{" "}
+                </div>
+                <SizeModal modal={modal} toggle={toggle} />
                 {/*  */}
 
                 {/*  */}
@@ -226,20 +253,7 @@ const ProductDetails = () => {
               </div>
               {tab === "desc" ? (
                 <div className="tab__content mt-5">
-                  {/* <p>{reviews.text}</p> */}
-                  <p>
-                    Nike Air Jordan 1 với lịch sử hơn 30 năm luôn được nhìn nhận
-                    như một trong những dòng sản phẩm thành công nhất của Nike.
-                    Nike Jordan 1 luôn bán hết một cách nhanh chóng ngay từ khi
-                    ra mắt đến nay, luôn là sản phẩm được các tín đồ thời trang
-                    chú ý hàng đầu. Air Jordan được đặt dựa theo ngôi sao bóng
-                    rổ lừng danh Michael Jordan - huyền thoại của NBA. Có bao
-                    giờ bạn tự hỏi rằng tại sao Jordan 1 lại có sức hút như vậy?
-                    Tại sao Jordan 1 luôn sold out rất nhanh và có giá resell
-                    cao ngất ngưởng? Ngày nay, Nike Jordan không chỉ có những
-                    đôi giày bóng rổ, nhắc đến giày sneakers cổ cao cá tính
-                    người ta vẫn sẽ nhớ ngay đến Nike Air Jordan 1.
-                  </p>
+                  <p>{item?.description}</p>
                 </div>
               ) : (
                 <div className="product__review">

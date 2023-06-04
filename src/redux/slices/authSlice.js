@@ -40,9 +40,6 @@ export const logOutAuth = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    // currentUser: {
-    //   roles: ["ROLE_ADMIN"],
-    // },
     currentUser: null,
     loading: false,
   },
@@ -64,7 +61,6 @@ const authSlice = createSlice({
         state.loading = false;
       })
       .addCase(logOutAuth.fulfilled, (state, action) => {
-        // state.currentUser = action.payload.data;
         state.currentUser = null;
       });
   },

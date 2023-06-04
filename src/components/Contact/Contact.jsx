@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Col, Row } from "reactstrap";
 import { FaHome } from "react-icons/fa";
 import "./contact.css";
+import { TypeAnimation } from "react-type-animation";
 const Contact = () => {
   return (
     <section>
@@ -10,13 +11,27 @@ const Contact = () => {
           <Col lg="6">
             <div className="contact">
               <div className="contact__info">
-                <h6>Thông tin liên hệ</h6>
-                <h2>Liên hệ với chúng tôi</h2>
-                <p>
-                  Chúng tôi luôn trân trọng và mong đợi nhận được mọi ý kiến
-                  đóng góp từ khách hàng để có thể nâng cấp trải nghiệm dịch vụ
-                  và sản phẩm tốt hơn nữa.
-                </p>
+                <TypeAnimation
+                  sequence={["Thông tin liên hệ", 1000]}
+                  wrapper="h6"
+                  cursor={true}
+                  speed={80}
+                />
+                <TypeAnimation
+                  sequence={["Liên hệ với chúng tôi", 1000]}
+                  wrapper="h2"
+                  cursor={true}
+                  speed={80}
+                />
+                <TypeAnimation
+                  sequence={[
+                    "Chúng tôi luôn trân trọng và mong đợi nhận được mọi ý kiến đóng góp từ khách hàng để có thể nâng cấp trải nghiệm dịch vụ và sản phẩm tốt hơn nữa.",
+                    1000,
+                  ]}
+                  speed={80}
+                  wrapper="p"
+                  cursor={true}
+                />
               </div>
               <div className="contact__detail">
                 <div className="contact__detail-img">

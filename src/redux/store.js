@@ -5,9 +5,10 @@ import cartSlice from "./slices/cartSlice";
 import ProductSlice from "./slices/ProductSlice";
 import purchasedSlice from "./slices/purchasedSlice";
 import UserSlice from "./slices/UserSlice";
-import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
+import managerProductSlice from "./slices/managerProductSlice";
+import { persistReducer } from "redux-persist";
 
 const commonConfig = {
   storage,
@@ -32,6 +33,7 @@ const store = combineReducers({
   product: ProductSlice,
   addProduct: addProductSlice,
   user: UserSlice,
+  managerProduct: managerProductSlice,
 });
 
 // const store = configureStore({

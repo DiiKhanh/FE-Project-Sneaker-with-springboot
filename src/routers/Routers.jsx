@@ -3,14 +3,11 @@ import Home from "../pages/Home";
 import Shop from "../pages/Shop";
 import Cart from "../pages/Cart";
 import Checkout from "../pages/Checkout";
-import Purchased from "../pages/Purchased";
 import Signup from "../pages/Signup";
 import Login from "../pages/Login";
 import ProductDetails from "../pages/ProductDetails";
 import NotFound from "../components/NotFound/NotFound";
 import ProtectedRoute from "./ProtectedRoute";
-import AddProduct from "../pages/AddProduct";
-import TestProduct from "../pages/TestProduct";
 import UserMenu from "../components/User/UserMenu";
 import PurchasedUser from "../pages/PurchasedUser";
 import ProfileUser from "../components/UI/ProfileUser";
@@ -19,8 +16,8 @@ import UserChangePassword from "../components/User/UserChangePassword";
 import UserNotify from "../components/User/UserNotify";
 import Dashboard from "../admin/Dashboard";
 import UserDashboard from "../admin/user/UserDashboard";
-import Loading from "../components/UI/Loading";
-import ProductDetailsTest from "../pages/ProductDetailsTest";
+import ManagerProduct from "../admin/product/ManagerProduct";
+import AuthRoute from "./AuthRoute";
 
 const Routers = () => {
   return (
@@ -32,35 +29,46 @@ const Routers = () => {
       <Route path="shop/:id" element={<ProductDetails />} />
       <Route path="cart" element={<Cart />} />
 
-      {/* <Route
-        path="/checkout"
-        element={
-          <ProtectedRoute>
-            <Checkout />
-          </ProtectedRoute>
-        }
-      /> */}
-      {/* <Route path="purchased" element={<Purchased />} /> */}
-      {/* <Route
-        path="add-product"
-        element={
-          <ProtectedRoute>
-            <AddProduct />
-          </ProtectedRoute>
-        }
-      /> */}
-      <Route path="/*" element={<ProtectedRoute />}>
-        <Route path="checkout" element={<Checkout />} />
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="dashboard/add-product" element={<AddProduct />} />
-        <Route path="dashboard/orders" element={<AddProduct />} />
-        <Route path="dashboard/users" element={<UserDashboard />} />
+      <Route path="/checkout" element={<ProtectedRoute />}>
+        <Route path="" element={<Checkout />} />
       </Route>
+
+      <Route
+        path="dashboard"
+        element={
+          <AuthRoute>
+            <Dashboard />
+          </AuthRoute>
+        }
+      />
+
+      <Route
+        path="dashboard/add-product"
+        element={
+          <AuthRoute>
+            <ManagerProduct />
+          </AuthRoute>
+        }
+      />
+      <Route
+        path="dashboard/orders"
+        element={
+          <AuthRoute>
+            <ManagerProduct />
+          </AuthRoute>
+        }
+      />
+      <Route
+        path="dashboard/users"
+        element={
+          <AuthRoute>
+            <UserDashboard />
+          </AuthRoute>
+        }
+      />
+
       <Route path="login" element={<Login />} />
       <Route path="signup" element={<Signup />} />
-      {/* test crud product */}
-      {/* <Route path="test-product" element={<TestProduct />} />
-      {/*  */}
 
       <Route path="/user-menu" element={<ProtectedRoute />}>
         <Route path="/user-menu" element={<UserMenu />}>
@@ -71,10 +79,7 @@ const Routers = () => {
         </Route>
       </Route>
 
-      <Route path="test-product" element={<TestProduct />} />
-      <Route path="testshop/:id" element={<ProductDetailsTest />} />
-
-      <Route path="404" element={<NotFound />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };

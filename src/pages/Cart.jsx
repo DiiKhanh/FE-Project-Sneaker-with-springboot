@@ -107,7 +107,12 @@ const Cart = () => {
                 <h6 className="d-flex align-items-center justify-content-between">
                   Tổng thanh toán
                   <span className="fs-4 fw-bold">
-                    ${totalAmount ? totalAmount : 0}
+                    {totalAmount
+                      ? totalAmount.toLocaleString("it-IT", {
+                          style: "currency",
+                          currency: "VND",
+                        })
+                      : 0}
                   </span>
                 </h6>
               </div>
@@ -158,7 +163,12 @@ const Tr = ({ item }) => {
         <img src={item.image} alt="" />
       </td>
       <td>{item.productName}</td>
-      <td>${item.price}</td>
+      <td>
+        {item.price?.toLocaleString("it-IT", {
+          style: "currency",
+          currency: "VND",
+        })}
+      </td>
       <td>
         <i className="ri-arrow-up-s-line" onClick={increaseAmount}></i>
         {item.quantity}

@@ -130,8 +130,8 @@ const UserDashboard = () => {
                   </tbody>
                 </Table>
                 <ReactPaginate
-                  previousLabel="Previous"
-                  nextLabel="Next"
+                  previousLabel="<"
+                  nextLabel=">"
                   pageClassName="page-item"
                   pageLinkClassName="page-link"
                   previousClassName="page-item"
@@ -142,6 +142,7 @@ const UserDashboard = () => {
                   breakClassName="page-item"
                   breakLinkClassName="page-link"
                   pageCount={totalPages}
+                  pageRangeDisplayed={5}
                   onPageChange={handlePageChange}
                   containerClassName="pagination"
                   activeClassName="active"

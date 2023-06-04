@@ -1,0 +1,13 @@
+.btn-file-product {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.add-btn-product {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  padding: 12px;
+}

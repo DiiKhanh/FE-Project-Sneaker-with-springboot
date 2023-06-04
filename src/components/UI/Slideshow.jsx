@@ -2,6 +2,7 @@ import React from "react";
 import { Fade, Zoom } from "react-slideshow-image";
 import "react-slideshow-image/dist/styles.css";
 import fadeImages from "../../assets/data/imgArr";
+import { TypeAnimation } from "react-type-animation";
 
 const Slideshow = ({ width }) => {
   return (
@@ -19,7 +20,13 @@ const Slideshow = ({ width }) => {
                   }}
                   src={fadeImage.url}
                 />
-                <h4 className="slide-text">Cho đôi chân của bạn</h4>
+                <TypeAnimation
+                  sequence={["Cho đôi chân của bạn", 1000]}
+                  wrapper="h4"
+                  repeat={true}
+                  cursor={true}
+                  className="slide-text"
+                />
               </div>
             ))}
           </Fade>

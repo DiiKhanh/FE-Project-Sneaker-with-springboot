@@ -126,33 +126,40 @@ const Checkout = () => {
                   Số lượng: <span>{totalQuantity} sản phẩm</span>
                 </h6>
                 <h6>
-                  Đơn giá: <span>${totalAmount}</span>
+                  Đơn giá:{" "}
+                  <span>
+                    {totalAmount.toLocaleString("it-IT", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
+                  </span>
                 </h6>
                 <h6>
                   <span>
                     Phí: <br />
                     Miễn phí giao hàng
                   </span>
-                  <span>$0</span>
+                  <span>0 đ</span>
                 </h6>
 
                 <h4>
-                  Thành tiền: <span>${totalAmount}</span>
+                  Thành tiền:{" "}
+                  <span>
+                    {totalAmount.toLocaleString("it-IT", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
+                  </span>
                 </h4>
                 <button className="buy__btn auth__btn w-100" onClick={checkOut}>
                   Thanh toán khi nhận hàng
                 </button>
                 <button
                   className="buy__btn auth__btn w-100"
-                  onClick={() => paymentOnline(Number(totalAmount * 500))}
+                  onClick={() => paymentOnline(Number(totalAmount))}
                 >
                   Thanh toán VNPay
                 </button>
-                {/* {vnpay && (
-                  <a href={vnpay} target="_blank">
-                    Đến thanh toán
-                  </a>
-                )} */}
                 {modal && (
                   <ModalPopup vnpay={vnpay} toggle={toggle} modal={modal} />
                 )}

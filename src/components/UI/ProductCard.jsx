@@ -9,14 +9,13 @@ import "../../styles/product-card.css";
 
 const ProductCard = ({ item }) => {
   const dispatch = useDispatch();
-  // add to cart {dang dung tinh~ chua co add vo api}
   const addToCart = () => {
     dispatch(
       cartActions.addItem({
         id: item.id,
         productName: item.name || item.productName,
-        price: item.retail_price_cents || item.price,
-        imgUrl: item.grid_picture_url || item.image,
+        price: item.retail_price_cents || item.productPrice,
+        imgUrl: item?.grid_picture_url || item.imgUrl,
       })
     );
     toast.success("Đã thêm vào giỏ hàng thành công!");
@@ -27,7 +26,7 @@ const ProductCard = ({ item }) => {
         <div className="product__img">
           <motion.img
             whileHover={{ scale: 0.9 }}
-            src={item.grid_picture_url || item.image}
+            src={item?.grid_picture_url || item.imgUrl}
             alt="item"
           />
         </div>
@@ -39,7 +38,11 @@ const ProductCard = ({ item }) => {
         </div>
         <div className="product__card-bottom d-flex align-items-center justify-content-between p-2">
           <span className="price">
-            ${item.retail_price_cents || item.price}
+            {item.retail_price_cents ||
+              item.productPrice?.toLocaleString("it-IT", {
+                style: "currency",
+                currency: "VND",
+              })}
           </span>
 
           <motion.span
