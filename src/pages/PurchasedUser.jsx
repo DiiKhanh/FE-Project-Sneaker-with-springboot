@@ -8,17 +8,17 @@ import {
   calculateTotalSpent,
   getUserOrder,
 } from "../redux/slices/purchasedSlice";
-import "../styles/purchased-test.css";
+import "../styles/purchased.css";
+import { clearCart } from "../redux/slices/cartSlice";
 
 export default function PurchasedUser() {
   const dispatch = useDispatch();
-  const { orderList, totalSpent, isLoading } = useSelector(
-    (state) => state.purchased
-  );
+  const { orderList, totalSpent } = useSelector((state) => state.purchased);
 
   // console.log(orderList);
   useEffect(() => {
     dispatch(calculateTotalSpent());
+    dispatch(clearCart());
   }, [orderList]);
 
   // Calling order data from server (x)
@@ -53,7 +53,11 @@ export default function PurchasedUser() {
           </Row>
           <Row>
             <h3 id="total-spent" className="text-center">
-              Số tiền đã mua: $ {totalSpent}
+              Số tiền đã mua:{" "}
+              {totalSpent.toLocaleString("it-IT", {
+                style: "currency",
+                currency: "VND",
+              })}
             </h3>
           </Row>
         </Container>

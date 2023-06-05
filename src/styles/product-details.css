@@ -225,3 +225,8 @@
   gap: 20px;
   cursor: pointer;
 }
+
+.select-container {
+  display: flex;
+  align-items: center;
+}

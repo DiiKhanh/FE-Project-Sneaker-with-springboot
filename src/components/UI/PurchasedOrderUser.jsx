@@ -4,11 +4,11 @@ import OrderItem from "./OrderItem";
 export default function PurchasedOrderUser({ order }) {
   const seeMoreBtn = useRef(null);
   const itemsContainer = useRef(null);
-  const [choice, setChoice] = useState("more");
+  const [choice, setChoice] = useState("Xem thêm");
   const toggleSeeMore = () => {
-    if (choice === "more") {
-      setChoice("less");
-    } else setChoice("more");
+    if (choice === "Xem thêm") {
+      setChoice("Ẩn bớt");
+    } else setChoice("Xem thêm");
     itemsContainer.current.classList.toggle("active");
   };
   const d = new Date();
@@ -32,7 +32,7 @@ export default function PurchasedOrderUser({ order }) {
           ref={seeMoreBtn}
           onClick={toggleSeeMore}
         >
-          See {choice}
+          {choice}
         </span>
       )}
       <hr></hr>

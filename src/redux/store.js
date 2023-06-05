@@ -27,8 +27,8 @@ const cartItems = {
 
 const store = combineReducers({
   cart: cartSlice,
-  // purchased: purchasedSlice,
-  purchased: persistReducer(cartItems, purchasedSlice),
+  purchased: purchasedSlice,
+  // purchased: persistReducer(cartItems, purchasedSlice),
   auth: persistReducer(currentUserConfig, authSlice),
   product: ProductSlice,
   addProduct: addProductSlice,

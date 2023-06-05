@@ -14,12 +14,15 @@ import { cartActions } from "../redux/slices/cartSlice";
 import size from "../assets/data/sizeArr";
 import axios from "axios";
 import SizeModal from "../components/UI/SizeModal";
+import SelectQuantity from "../components/UI/SelectQuantity";
+import { useCallback } from "react";
 
 const ProductDetails = () => {
+  const dispatch = useDispatch();
+
   //
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
-
   //
   const [tab, setTab] = useState("desc");
   const [rating, setRating] = useState(null);
@@ -43,7 +46,6 @@ const ProductDetails = () => {
   const relatedProducts = allProducts?.filter(
     (data) => data.category === item?.category && data.id !== item?.id
   );
-  const dispatch = useDispatch();
   const addToCart = () => {
     dispatch(
       cartActions.addItem({
@@ -72,6 +74,29 @@ const ProductDetails = () => {
     window.scrollTo(0, 0);
   }, [item]);
   const [selectIdx, setSelectIdx] = useState(-1);
+
+  // handle quantity
+  const [quantity, setQuantity] = useState(1);
+
+  const handleQuantity = useCallback(
+    (number) => {
+      if (!Number(number) || Number(number) < 1) {
+        return;
+      } else {
+        setQuantity(number);
+      }
+    },
+    [quantity]
+  );
+
+  const handleChangeQuantity = useCallback(
+    (flag) => {
+      if (flag === "minus" && quantity === 1) return;
+      if (flag === "minus") setQuantity((prev) => +prev - 1);
+      if (flag === "plus") setQuantity((prev) => +prev + 1);
+    },
+    [quantity]
+  );
 
   return (
     <Helmet title={productName}>
@@ -197,7 +222,18 @@ const ProductDetails = () => {
                 </div>
                 <SizeModal modal={modal} toggle={toggle} />
                 {/*  */}
-
+                <div className="mt-5 select-container">
+                  <div>Số lượng</div>
+                  <div className="d-flex mx-5 gap-5">
+                    <SelectQuantity
+                      quantity={quantity}
+                      handleQuantity={handleQuantity}
+                      handleChangeQuantity={handleChangeQuantity}
+                    />
+                    <span>{item?.quantity} sản phẩm có sẵn</span>
+                  </div>
+                  <div></div>
+                </div>
                 {/*  */}
                 <div className="buy-add">
                   <motion.button

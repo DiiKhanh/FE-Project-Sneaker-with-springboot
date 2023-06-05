@@ -7,10 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearCart } from "../redux/slices/cartSlice";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import { useState } from "react";
 import { addOrder } from "../redux/slices/purchasedSlice";
-// import ModalPopup from "../components/UI/ModalPopup";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
 const Checkout = () => {
@@ -32,19 +30,7 @@ const Checkout = () => {
       }
     );
     setModal(!modal);
-
     setVnpay(res.data.data);
-    checkOut();
-    // if (cartItems.length === 0) return;
-    // else {
-    //   dispatch(clearCart());
-    //   dispatch(addOrder(createOrder(cartItems)));
-    //   setTestID(testID + 1);
-    //   // dispatch(addOrder(createOrder(cartItems)));
-    //   // setTestID(testID + 1);
-    //   // checkOutLink.current.click();
-    //   // setTimeout(() => navigate("/checkout"), 2000);
-    // }
   };
   const toggle = () => setModal(!modal);
 
@@ -70,6 +56,7 @@ const Checkout = () => {
   };
 
   const checkOut = () => {
+    setModal(false);
     // Send order data to server (x)
     if (cartItems.length === 0) return;
     else {
@@ -77,10 +64,6 @@ const Checkout = () => {
       dispatch(clearCart());
       dispatch(addOrder(createOrder(cartItems)));
       setTestID(testID + 1);
-      // dispatch(addOrder(createOrder(cartItems)));
-      // setTestID(testID + 1);
-      // checkOutLink.current.click();
-      // setTimeout(() => navigate("/checkout"), 2000);
     }
   };
 
@@ -161,7 +144,12 @@ const Checkout = () => {
                   Thanh toán VNPay
                 </button>
                 {modal && (
-                  <ModalPopup vnpay={vnpay} toggle={toggle} modal={modal} />
+                  <ModalPopup
+                    vnpay={vnpay}
+                    toggle={toggle}
+                    modal={modal}
+                    checkOut={checkOut}
+                  />
                 )}
               </div>
             </Col>
@@ -182,7 +170,12 @@ const ModalPopup = (props) => {
         <ModalBody>{`Bạn sẽ được dẫn đến trang thanh toán VNPay vui lòng xác nhận`}</ModalBody>
         <ModalFooter>
           <Button color="primary">
-            <a href={props.vnpay} target="_blank" onClick={props.toggle}>
+            <a
+              href={props.vnpay}
+              target="_self"
+              onClick={props.checkOut}
+              style={{ color: "#fff" }}
+            >
               Xác nhận
             </a>
           </Button>{" "}

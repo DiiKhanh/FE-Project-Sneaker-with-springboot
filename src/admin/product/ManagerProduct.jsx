@@ -17,7 +17,6 @@ import EditProductModal from "./EditProductModal";
 import ReactPaginate from "react-paginate";
 import axios from "axios";
 import DeleteProductModal from "./DeleteProductModal";
-
 const ManagerProduct = () => {
   // redux toolkit
   const isError = useSelector((state) => state.managerProduct?.isError);

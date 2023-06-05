@@ -3,7 +3,14 @@ import "./header.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../../assets/images/eco-logo.png";
 import userIcon from "../../assets/images/user-icon.png";
-import { Container, Row } from "reactstrap";
+import {
+  Container,
+  Row,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -89,6 +96,10 @@ const Header = () => {
     }, 1000);
   };
 
+  //
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => setDropdownOpen((prevState) => !prevState);
   return (
     <header className="header" ref={headerRef}>
       <Container>
@@ -129,62 +140,56 @@ const Header = () => {
                 <i className="ri-shopping-bag-line"></i>
                 <span className="badge">{totalQuantity}</span>
               </span>
-              <div className="profile">
-                <motion.img
-                  whileTap={{ scale: 1.2 }}
-                  src={currentUser ? userIcon : userIcon}
-                  alt="avt-user"
-                  onClick={toggleProfile}
-                />
-                <span
-                  className="mx-3"
-                  onClick={toggleProfile}
-                  style={{
-                    cursor: "pointer",
-                  }}
-                >
-                  {currentUser?.username}
-                </span>
-                <div
-                  className="profile__actions"
-                  ref={profileRef}
-                  onClick={toggleProfile}
-                >
-                  {currentUser?.username ? (
-                    <div className="login__success">
-                      <motion.span
-                        whileHover={{ scale: 1.1 }}
-                        onClick={handleLogout}
-                      >
-                        Đăng xuất
-                      </motion.span>
-                      <motion.span
-                        whileHover={{ scale: 1.1 }}
-                        onClick={handleVerify}
-                      >
-                        Trang quản lý
-                      </motion.span>
-                      <motion.span
-                        whileHover={{ scale: 1.1 }}
-                        onClick={handleProfile}
-                      >
-                        Tài khoản của tôi
-                      </motion.span>
-                      <motion.span
-                        whileHover={{ scale: 1.1 }}
-                        onClick={handlePurchased}
-                      >
-                        Lịch sử mua hàng
-                      </motion.span>
-                    </div>
-                  ) : (
-                    <div className="d-flex align-items-center justify-content-between flex-column">
-                      <Link to="/signup">Đăng ký</Link>
-                      <Link to="/login">Đăng nhập</Link>
-                    </div>
-                  )}
-                </div>
-              </div>
+              {currentUser?.username ? (
+                <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
+                  <DropdownToggle caret>
+                    <img
+                      src={currentUser ? userIcon : userIcon}
+                      alt="avt"
+                      style={{
+                        objectFit: "cover",
+                        height: "30px",
+                        width: "30px",
+                        marginRight: "10px",
+                      }}
+                    />
+                    {currentUser?.username}
+                  </DropdownToggle>
+                  <DropdownMenu className="dropdown-menu">
+                    <DropdownItem onClick={handleProfile}>
+                      Tài khoản của tôi
+                    </DropdownItem>
+                    <DropdownItem onClick={handlePurchased}>
+                      Lịch sử mua hàng
+                    </DropdownItem>
+                    <DropdownItem onClick={handleVerify}>
+                      Trang quản lý
+                    </DropdownItem>
+                    <DropdownItem onClick={handleLogout}>
+                      Đăng xuất
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              ) : (
+                <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
+                  <DropdownToggle style={{ background: "#333" }}>
+                    Chưa đăng nhập?
+                  </DropdownToggle>
+                  <DropdownMenu className="dropdown-menu">
+                    <DropdownItem>
+                      <Link to="/login" style={{ color: "#333" }}>
+                        Đăng Nhập
+                      </Link>
+                    </DropdownItem>
+                    <DropdownItem>
+                      <Link to="/signup" style={{ color: "#333" }}>
+                        Đăng ký
+                      </Link>
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              )}
+              {/* mobile */}
               <div className="mobile__menu" onClick={menuToggle}>
                 <span>
                   <i className="ri-menu-line"></i>
