@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import "../styles/cart.css";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/CommonSection";
-import { Container, Row, Col } from "reactstrap";
+import { Container, Row, Col, Progress } from "reactstrap";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import {
@@ -76,6 +76,20 @@ const Cart = () => {
     <Helmet title="Cart">
       <CommonSection title="Shopping Cart" />
       <section>
+        {cartItems.length === 0 ? (
+          <></>
+        ) : (
+          <Container>
+            <Progress
+              className="my-2"
+              value="50"
+              animated
+              style={{ height: "20px" }}
+            >
+              <h6>Xác nhận thanh toán</h6>
+            </Progress>
+          </Container>
+        )}
         <Container>
           <Row>
             <Col lg="9">

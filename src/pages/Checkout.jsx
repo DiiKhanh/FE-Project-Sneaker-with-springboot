@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col, Form, FormGroup } from "reactstrap";
+import { Container, Row, Col, Form, FormGroup, Progress } from "reactstrap";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/CommonSection";
 import "../styles/checkout.css";
@@ -69,8 +69,19 @@ const Checkout = () => {
 
   return (
     <Helmet title="Checkout">
-      <CommonSection title="Checkout" />
+      {/* <CommonSection title="Checkout" /> */}
       <section>
+        <Container>
+          <Progress
+            className="my-2"
+            value="100"
+            animated
+            color="info"
+            style={{ height: "20px" }}
+          >
+            <h6>Chờ thanh toán</h6>
+          </Progress>
+        </Container>
         <Container>
           <Row>
             <Col lg="8">

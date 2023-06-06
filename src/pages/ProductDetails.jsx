@@ -16,6 +16,7 @@ import axios from "axios";
 import SizeModal from "../components/UI/SizeModal";
 import SelectQuantity from "../components/UI/SelectQuantity";
 import { useCallback } from "react";
+import bannernho from "../assets/images/banner-nho.png";
 
 const ProductDetails = () => {
   const dispatch = useDispatch();
@@ -100,7 +101,8 @@ const ProductDetails = () => {
 
   return (
     <Helmet title={productName}>
-      <CommonSection title={productName} />
+      {/* <CommonSection title={productName} /> */}
+      <img src={bannernho} alt="" />
       <section>
         <div style={{ marginLeft: "300px" }}>
           <Breadcrumb>

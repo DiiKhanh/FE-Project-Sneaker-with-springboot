@@ -1,5 +1,13 @@
-import React, { useRef } from "react";
-import { Container, Row, Col } from "reactstrap";
+import React, { useRef, useState } from "react";
+import {
+  Container,
+  Row,
+  Col,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap";
 import { NavLink } from "react-router-dom";
 import avt from "../assets/images/user-icon.png";
 import logo from "../assets/images/eco-logo.png";
@@ -42,6 +50,10 @@ const AdminNav = () => {
   const toggleProfile = () => {
     profileRef.current.classList.toggle("show__profile");
   };
+
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => setDropdownOpen((prevState) => !prevState);
   return (
     <>
       <header className="admin__header">
@@ -64,46 +76,30 @@ const AdminNav = () => {
                 <span>
                   <i className="ri-settings-2-line"></i>
                 </span>
-                {/* <img src={avt} alt="avatar" /> */}
-                <div className="profile">
-                  <div>
-                    <motion.img
-                      whileTap={{ scale: 1.2 }}
-                      src={avt}
-                      alt="avt-user"
-                      onClick={toggleProfile}
+                <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown}>
+                  <DropdownToggle caret>
+                    <img
+                      src={user ? avt : avt}
+                      alt="avt"
+                      style={{
+                        objectFit: "cover",
+                        height: "30px",
+                        width: "30px",
+                        marginRight: "10px",
+                      }}
                     />
-                    <span className="mx-3 text-white" onClick={toggleProfile}>
-                      {user?.username}
-                    </span>
-                  </div>
-                  <div
-                    className="profile__actions"
-                    ref={profileRef}
-                    onClick={toggleProfile}
-                  >
-                    <div className="login__success">
-                      <motion.span
-                        whileHover={{ scale: 1.1 }}
-                        onClick={handleLogout}
-                      >
-                        Đăng xuất
-                      </motion.span>
-                      <motion.span
-                        whileHover={{ scale: 1.1 }}
-                        onClick={handleProfile}
-                      >
-                        Tài khoản của tôi
-                      </motion.span>
-                      <motion.span
-                        whileHover={{ scale: 1.1 }}
-                        onClick={handleProfile}
-                      >
-                        Cài đặt
-                      </motion.span>
-                    </div>
-                  </div>
-                </div>
+                    {user?.username}
+                  </DropdownToggle>
+                  <DropdownMenu className="dropdown-menu">
+                    <DropdownItem onClick={handleProfile}>
+                      Tài khoản của tôi
+                    </DropdownItem>
+
+                    <DropdownItem onClick={handleLogout}>
+                      Đăng xuất
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
               </div>
             </div>
           </Container>
