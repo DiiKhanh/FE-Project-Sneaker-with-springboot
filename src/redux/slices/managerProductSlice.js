@@ -118,13 +118,6 @@ const managerProductSlice = createSlice({
         if (dataIndex >= 0) {
           state.products[dataIndex] = newData;
         }
-        // page
-        const dataIndex1 = state.productsPage.findIndex(
-          (data) => data.id === newData.id
-        );
-        if (dataIndex >= 0) {
-          state.productsPage[dataIndex1] = newData;
-        }
       })
       .addCase(editProduct.rejected, (state) => {})
       .addCase(deleteProduct.fulfilled, (state, action) => {

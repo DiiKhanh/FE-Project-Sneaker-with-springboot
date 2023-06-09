@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/CommonSection";
-import { Container, Row, Col } from "reactstrap";
+import { Container, Row, Col, Button } from "reactstrap";
 import "../styles/shop.css";
 import products from "../assets/data/products";
 import ProductsList from "../components/UI/ProductsList";
@@ -12,6 +12,10 @@ import ReactPaginate from "react-paginate";
 const Shop = () => {
   const [productsData, setProductsData] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
+  const [sort, setSort] = useState("normal");
+  const [asc, setAsc] = useState(1);
+  const [productsSort, setProductsSort] = useState([]);
+  const [check, setCheck] = useState(1);
   const pageProduct = async (page) => {
     const res = await axios.get(
       `http://localhost:8080/api/product/shop-products?page=${page}`
@@ -23,8 +27,16 @@ const Shop = () => {
   useEffect(() => {
     pageProduct(0);
   }, []);
+
   const handlePageChange = (e) => {
     pageProduct(e.selected);
+  };
+
+  const fetchSort = async () => {
+    const res = await axios.get(
+      `http://localhost:8080/api/product/sort-products?asc=${asc}&sortBy=${sort}`
+    );
+    setProductsSort(res.data.data);
   };
 
   const handleSearch = (e) => {
@@ -33,6 +45,17 @@ const Shop = () => {
       item.name.toLowerCase().includes(searchText.toLowerCase())
     );
     setProductsData(searchedValue);
+    if (check === 2) {
+      const searchedValue = products.filter((item) =>
+        item.name.toLowerCase().includes(searchText.toLowerCase())
+      );
+      setProductsSort(searchedValue);
+    }
+  };
+
+  const handleClickSort = () => {
+    setCheck(2);
+    fetchSort();
   };
 
   return (
@@ -41,23 +64,40 @@ const Shop = () => {
       <section>
         <Container>
           <Row>
-            <Col lg="3" md="6">
+            <Col lg="6" md="6" style={{ display: "flex", gap: "20px" }}>
               <div className="filter__widget">
-                <select>
-                  <option value="none">Lọc theo: </option>
-                  <option value="prcie">Giá</option>
-                  <option value="style">Phong cách</option>
+                <select
+                  onChange={(e) => {
+                    if (e.target.value === "normal") {
+                      setCheck(1);
+                      setSort(e.target.value);
+                    } else {
+                      setSort(e.target.value);
+                    }
+                  }}
+                >
+                  <option value="normal">Lọc theo: </option>
+                  <option value="productPrice">Giá</option>
                 </select>
               </div>
-            </Col>
-            <Col lg="3" md="6" className="text-end">
               <div className="filter__widget">
-                <select>
+                <select
+                  onChange={(e) => {
+                    e.target.value === "asc" ? setAsc(1) : setAsc(2);
+                  }}
+                >
                   <option value="none">Sắp xếp:</option>
-                  <option value="ascending">Tăng dần</option>
-                  <option value="descending">Giảm dần</option>
+                  <option value="asc">Tăng dần</option>
+                  <option value="desc">Giảm dần</option>
                 </select>
               </div>
+              <Button
+                className="filter__widget"
+                style={{ width: "200px" }}
+                onClick={handleClickSort}
+              >
+                Xác nhận
+              </Button>
             </Col>
             <Col lg="6" md="12">
               <div className="search__box">
@@ -82,7 +122,7 @@ const Shop = () => {
               <h1 className="text-center fs-4">
                 Không tìm thấy sản phẩm! Có lỗi đã xảy ra vui lòng tải lại trang
               </h1>
-            ) : (
+            ) : check === 1 ? (
               <>
                 <ProductsList data={productsData} />
                 <div className="paginate-shop">
@@ -105,6 +145,10 @@ const Shop = () => {
                     activeClassName="active"
                   />
                 </div>
+              </>
+            ) : (
+              <>
+                <ProductsList data={productsSort} />
               </>
             )}
           </Row>

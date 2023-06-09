@@ -255,7 +255,7 @@ const ProductDetails = () => {
                   >
                     Mua ngay
                   </motion.button>
-                  <motion.button
+                  {/* <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 1.2 }}
                     className="buy__btn"
@@ -263,7 +263,7 @@ const ProductDetails = () => {
                     onClick={addToCart}
                   >
                     Yêu thích ❤
-                  </motion.button>
+                  </motion.button> */}
                 </div>
               </div>
             </Col>

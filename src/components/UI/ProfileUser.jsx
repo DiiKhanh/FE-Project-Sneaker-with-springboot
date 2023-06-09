@@ -1,12 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Row, Form, FormGroup } from "reactstrap";
 import { motion } from "framer-motion";
 import { BsPen } from "react-icons/bs";
 import Helmet from "../Helmet/Helmet";
 import "./ProfileUser.css";
 import { useSelector } from "react-redux";
+import EditProfileUser from "./EditProfileUser";
 const ProfileUser = () => {
   const user = useSelector((state) => state.auth?.currentUser);
+
+  const [modal, setModal] = useState(false);
+  const toggle = () => setModal(!modal);
+
+  const data = {
+    email: user?.email,
+    address: user?.address,
+    phone: user?.phone,
+  };
+
   return (
     <Helmet title="Profile">
       <Container>
@@ -45,13 +56,24 @@ const ProfileUser = () => {
                 <p>{user?.birth}</p>
               </FormGroup>
             </Form>
-            <motion.div whileTap={{ scale: 1.1 }} className="profile__edit">
+            <motion.div
+              whileTap={{ scale: 1.1 }}
+              className="profile__edit"
+              onClick={() => setModal(true)}
+            >
               <div className="profile__edit-text">Sửa hồ sơ</div>
               <div className="profile__edit-icon">
                 <BsPen></BsPen>
               </div>
             </motion.div>
           </div>
+          <EditProfileUser
+            toggle={toggle}
+            modal={modal}
+            setModal={setModal}
+            data={data}
+            id={user?.id}
+          />
         </Row>
       </Container>
     </Helmet>

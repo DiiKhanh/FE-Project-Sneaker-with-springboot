@@ -55,8 +55,35 @@ const Checkout = () => {
     };
   };
 
-  const checkOut = () => {
+  const [formEmail, setFormEmail] = useState({
+    email: "",
+    name: "",
+    phone: "",
+    address: "",
+    city: "",
+    postalCode: "",
+    country: "",
+  });
+
+  const handleChangeFormEmail = (e) => {
+    setFormEmail((data) => ({ ...data, [e.target.name]: e.target.value }));
+  };
+
+  const checkOut = async () => {
     setModal(false);
+    // const data = {
+    //   to: formEmail.email,
+    //   subject: ``,
+    // };
+    // const res = await axios.post(
+    //   "http://localhost:8080/api/email/send-email",
+
+    //   {
+    //     headers: {
+    //       Authorization: `Bearer ${user?.accessToken}`,
+    //     },
+    //   }
+    // );
     // Send order data to server (x)
     if (cartItems.length === 0) return;
     else {
@@ -88,29 +115,68 @@ const Checkout = () => {
               <h6 className="fw-bold mb-4">Thông tin hóa đơn</h6>
               <Form className="billing__form">
                 <FormGroup className="form__group">
-                  <input type="text" placeholder="Nhập tên của bạn" />
+                  <input
+                    type="text"
+                    placeholder="Nhập tên của bạn"
+                    name="name"
+                    value={formEmail.name}
+                    onChange={handleChangeFormEmail}
+                  />
                 </FormGroup>
                 <FormGroup className="form__group">
-                  <input type="email" placeholder="Nhập email của bạn" />
+                  <input
+                    type="email"
+                    placeholder="Nhập email của bạn"
+                    name="email"
+                    value={formEmail.email}
+                    onChange={handleChangeFormEmail}
+                  />
                 </FormGroup>
                 <FormGroup className="form__group">
                   <input
                     type="phone"
                     placeholder="Nhập số điện thoại nhận hàng"
+                    name="phone"
+                    value={formEmail.phone}
+                    onChange={handleChangeFormEmail}
                   />
                 </FormGroup>
                 <FormGroup className="form__group">
-                  <input type="text" placeholder="Nhập địa chỉ giao hàng" />
+                  <input
+                    type="text"
+                    placeholder="Nhập địa chỉ giao hàng"
+                    name="address"
+                    value={formEmail.address}
+                    onChange={handleChangeFormEmail}
+                  />
                 </FormGroup>
                 <FormGroup className="form__group">
-                  <input type="text" placeholder="Thành phố" />
+                  <input
+                    type="text"
+                    placeholder="Thành phố"
+                    name="city"
+                    value={formEmail.city}
+                    onChange={handleChangeFormEmail}
+                  />
                 </FormGroup>
 
                 <FormGroup className="form__group">
-                  <input type="text" placeholder="Mã bưu điện" />
+                  <input
+                    type="text"
+                    placeholder="Mã bưu điện"
+                    name="postalCode"
+                    value={formEmail.postalCode}
+                    onChange={handleChangeFormEmail}
+                  />
                 </FormGroup>
                 <FormGroup className="form__group">
-                  <input type="text" placeholder="Quốc gia" />
+                  <input
+                    type="text"
+                    placeholder="Quốc gia"
+                    name="country"
+                    value={formEmail.country}
+                    onChange={handleChangeFormEmail}
+                  />
                 </FormGroup>
               </Form>
             </Col>

@@ -10,6 +10,8 @@ import { motion } from "framer-motion";
 import { NavLink, Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "../../redux/slices/authSlice";
+import { toast } from "react-toastify";
+
 const nav__links = [
   {
     path: "profile",

@@ -11,7 +11,15 @@ const userSlice = createSlice({
       state.users = action.payload.data;
       state.totalPages = action.payload.total_pages;
     },
+    editUser: (state, action) => {
+      const newData = action.payload.data;
+      // all
+      const dataIndex = state.users.findIndex((data) => data.id === newData.id);
+      if (dataIndex >= 0) {
+        state.users[dataIndex] = newData;
+      }
+    },
   },
 });
-export const { allUsers } = userSlice.actions;
+export const { allUsers, editUser } = userSlice.actions;
 export default userSlice.reducer;

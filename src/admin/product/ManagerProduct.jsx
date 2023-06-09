@@ -14,9 +14,8 @@ import {
   fetchAllProduct,
 } from "../../redux/slices/managerProductSlice";
 import EditProductModal from "./EditProductModal";
-import ReactPaginate from "react-paginate";
-import axios from "axios";
 import DeleteProductModal from "./DeleteProductModal";
+import InfiniteScroll from "react-infinite-scroll-component";
 const ManagerProduct = () => {
   // redux toolkit
   const isError = useSelector((state) => state.managerProduct?.isError);
@@ -24,33 +23,33 @@ const ManagerProduct = () => {
   const dataProducts = useSelector((state) => state.managerProduct?.products);
   const error = useSelector((state) => state.managerProduct?.error);
   const dispatch = useDispatch();
-  const { productsPage, totalPages } = useSelector(
-    (state) => state.managerProduct
-  );
+  // const { productsPage, totalPages } = useSelector(
+  //   (state) => state.managerProduct
+  // );
 
   // modal
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
 
   // function call api
-  const pageProduct = async (page) => {
-    const res = await axios.get(
-      `http://localhost:8080/api/product/all-products?page=${page}`
-    );
-    dispatch(dataProductsPage(res.data));
-  };
+  // const pageProduct = async (page) => {
+  //   const res = await axios.get(
+  //     `http://localhost:8080/api/product/all-products?page=${page}`
+  //   );
+  //   dispatch(dataProductsPage(res.data));
+  // };
   const fetchAllProducts = () => {
     dispatch(fetchAllProduct());
   };
   useEffect(() => {
     fetchAllProducts();
-    pageProduct(0);
+    // pageProduct(0);
   }, [dispatch]);
 
   //
-  const handlePageChange = async (e) => {
-    await pageProduct(e.selected);
-  };
+  // const handlePageChange = async (e) => {
+  //   await pageProduct(e.selected);
+  // };
 
   return (
     <section className="manager-section">
@@ -96,42 +95,26 @@ const ManagerProduct = () => {
               </>
             ) : (
               <>
-                <Table hover>
-                  <thead>
-                    <tr>
-                      <th>No.</th>
-                      <th>Hình ảnh</th>
-                      <th>Tên sản phẩm</th>
-                      <th>Giá</th>
-                      <th>Số lượng</th>
-                      <th>Sửa</th>
-                      <th>Xóa</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {productsPage?.map((data, idx) => (
-                      <Tr data={data} key={`key-${idx}`} idx={idx} />
-                    ))}
-                  </tbody>
-                </Table>
-                <ReactPaginate
-                  previousLabel="<"
-                  nextLabel=">"
-                  pageClassName="page-item"
-                  pageLinkClassName="page-link"
-                  previousClassName="page-item"
-                  previousLinkClassName="page-link"
-                  nextClassName="page-item"
-                  nextLinkClassName="page-link"
-                  breakLabel="..."
-                  breakClassName="page-item"
-                  breakLinkClassName="page-link"
-                  pageCount={totalPages}
-                  pageRangeDisplayed={5}
-                  onPageChange={handlePageChange}
-                  containerClassName="pagination"
-                  activeClassName="active"
-                />
+                <InfiniteScroll height={600} dataLength={dataProducts?.length}>
+                  <Table hover>
+                    <thead>
+                      <tr>
+                        <th>No.</th>
+                        <th>Hình ảnh</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Giá</th>
+                        <th>Số lượng</th>
+                        <th>Sửa</th>
+                        <th>Xóa</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {dataProducts?.map((data, idx) => (
+                        <Tr data={data} key={`key-${idx}`} idx={idx} />
+                      ))}
+                    </tbody>
+                  </Table>
+                </InfiniteScroll>
               </>
             )}
           </div>

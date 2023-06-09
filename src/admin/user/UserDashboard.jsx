@@ -11,6 +11,8 @@ import ModalPopup from "../../components/UI/ModalPopup";
 import { Button, Table } from "reactstrap";
 import ExportCSV from "../../utils/ExportCSV";
 import ReactPaginate from "react-paginate";
+import EditUserModal from "./EditUserModal";
+import BlockUserModal from "./BlockUserModal";
 
 const UserDashboard = () => {
   const dispatch = useDispatch();
@@ -49,10 +51,6 @@ const UserDashboard = () => {
   useEffect(() => {
     fetchAllUser(0);
     fetchAllUserToExport();
-    // const timer = setInterval(() => {
-    //   fetchAllUser();
-    // }, 1000);
-    // return () => clearInterval(timer);
   }, [dispatch]);
 
   const handleSearch = (e) => {
@@ -113,7 +111,6 @@ const UserDashboard = () => {
                       <th>Số điện thoại</th>
                       <th>Giới tính</th>
                       <th>Ngày sinh</th>
-                      {/* <th>Vai trò</th> */}
                       <th>Xóa</th>
                       <th>Sửa</th>
                       <th>Chặn</th>
@@ -174,51 +171,71 @@ const Tr = ({ data, idx }) => {
     setModal(!modal);
   };
   const toggle = () => setModal(!modal);
+
+  const dataEdit = {
+    email: data?.email,
+    address: data?.address,
+    phone: data?.phone,
+  };
+  const [modalEdit, setModalEdit] = useState(false);
+  const toggleEdit = () => setModalEdit(!modalEdit);
+
+  const [modalBlock, setModalBlock] = useState(false);
+  const toggleBlock = () => setModalBlock(!modalBlock);
   return (
-    <tr>
-      <td>{idx + 1}</td>
-      <td>{data?.username}</td>
-      <td>{data?.email}</td>
-      <td>{data?.address}</td>
-      <td>{data?.phone}</td>
-      <td>{data?.gender}</td>
-      <td>{data?.birth}</td>
-      {/* <th>{data?.role}</th> */}
-      <td>
-        {/* <motion.i
-          whileTap={{ scale: 1.2 }}
-          onClick={deleteUser}
-          className="ri-delete-bin-line"
-        ></motion.i> */}
-        <Button
-          color="danger"
-          onClick={toggle}
-          className="ri-delete-bin-line"
-        ></Button>
-        {modal && (
-          <ModalPopup
-            delete={deleteUser}
-            toggle={toggle}
-            modal={modal}
-            text="người dùng"
+    <>
+      <tr>
+        <td>{data?.id}</td>
+        <td>{data?.username}</td>
+        <td>{data?.email}</td>
+        <td>{data?.address}</td>
+        <td>{data?.phone}</td>
+        <td>{data?.gender}</td>
+        <td>{data?.birth}</td>
+        <td>
+          <Button
+            color="danger"
+            onClick={toggle}
+            className="ri-delete-bin-line"
           />
-        )}
-      </td>
-      <td>
-        <motion.i
-          whileTap={{ scale: 1.2 }}
-          className="ri-edit-2-line"
-          // onClick={editProduct}
-        ></motion.i>
-      </td>
-      <td>
-        <motion.i
-          whileTap={{ scale: 1.2 }}
-          className="ri-user-unfollow-line"
-          // onClick={editProduct}
-        ></motion.i>
-      </td>
-    </tr>
+          {modal && (
+            <ModalPopup
+              delete={deleteUser}
+              toggle={toggle}
+              modal={modal}
+              text="người dùng"
+            />
+          )}
+        </td>
+        <td>
+          <Button
+            color="warning"
+            onClick={() => setModalEdit(true)}
+            className="ri-edit-2-line"
+          />
+        </td>
+        <td>
+          <Button
+            color="info"
+            onClick={() => setModalBlock(true)}
+            className="ri-user-unfollow-line"
+          />
+        </td>
+      </tr>
+      <EditUserModal
+        toggle={toggleEdit}
+        modal={modalEdit}
+        setModal={setModalEdit}
+        data={dataEdit}
+        id={data?.id}
+      />
+      <BlockUserModal
+        toggle={toggleBlock}
+        modal={modalBlock}
+        setModal={setModalBlock}
+        text={data?.username}
+      />
+    </>
   );
 };
 
