@@ -10,8 +10,6 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 
-const arr_number = [400, 525, 292];
-
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -29,27 +27,27 @@ export const options = {
     },
     title: {
       display: true,
-      text: "Thống kê",
+      text: "Thống kê lượng người dùng",
     },
   },
 };
 
-const labels = ["January", "February", "March", "April", "May", "June", "July"];
+const labels = ["Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6"];
+const register = [20, 18, 20, 10];
+const use = [10, 15, 21, 30];
 
 export const data = {
   labels,
   datasets: [
     {
-      label: "Dataset 1",
-      data: labels.map(() => Math.floor(Math.random() * 1000) + 1),
+      label: "Số người dùng đăng ký",
+      data: register.map((number) => number),
 
-      // data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
       backgroundColor: "rgba(255, 99, 132, 0.5)",
     },
     {
-      label: "Dataset 2",
-      // data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-      data: labels.map(() => Math.floor(Math.random() * 1000) + 1),
+      label: "Số người dùng truy cập",
+      data: use.map((number) => number),
 
       backgroundColor: "rgba(53, 162, 235, 0.5)",
     },

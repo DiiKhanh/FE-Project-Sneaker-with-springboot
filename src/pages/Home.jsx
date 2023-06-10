@@ -15,6 +15,7 @@ import * as api from "../api";
 import { logOutAuth } from "../redux/slices/authSlice";
 import { TypeAnimation } from "react-type-animation";
 import { fetchAllProduct } from "../redux/slices/managerProductSlice";
+import CountUp from "react-countup";
 
 const Home = () => {
   const products = useSelector((state) => state.managerProduct?.products);
@@ -87,6 +88,35 @@ const Home = () => {
       <Services />
       {/* brand */}
       <Brand />
+      <section>
+        <Container>
+          <Row>
+            <Col lg="6">
+              <div className="countup__home">
+                Hơn
+                <CountUp
+                  start={0}
+                  end={100}
+                  duration={5}
+                  style={{ fontSize: "30px" }}
+                />
+                sản phẩm đã được bán!
+              </div>
+            </Col>
+            <Col lg="6">
+              <div className="countup__home">
+                <CountUp
+                  start={50}
+                  end={200}
+                  duration={5}
+                  style={{ fontSize: "30px" }}
+                />
+                <h5>+</h5> người đăng ký
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      </section>
       <section className="trending__products">
         <Container>
           <Row>

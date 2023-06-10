@@ -8,12 +8,13 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import avt from "../assets/images/user-icon.png";
 import logo from "../assets/images/eco-logo.png";
 import "./AdminNav.css";
-import { motion } from "framer-motion";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logOut } from "../redux/slices/authSlice";
+import { toast } from "react-toastify";
 
 const admin_nav = [
   {
@@ -45,8 +46,15 @@ const admin_nav = [
 const AdminNav = () => {
   const user = useSelector((state) => state.auth?.currentUser);
   const profileRef = useRef(null);
-  const handleLogout = () => {};
-  const handleProfile = () => {};
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    dispatch(logOut());
+    toast.success("Đăng xuất thành công!");
+  };
+  const handleProfile = () => {
+    navigate("/user-menu/profile");
+  };
   const toggleProfile = () => {
     profileRef.current.classList.toggle("show__profile");
   };

@@ -16,6 +16,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { addOrder } from "../redux/slices/purchasedSlice";
+import axios from "axios";
 
 const Cart = () => {
   const { cartItems, totalAmount, totalQuantity } = useSelector(
@@ -23,6 +24,8 @@ const Cart = () => {
   );
   const [isEmpty, setIsEmpty] = useState(true);
   const [testID, setTestID] = useState(4);
+  const [cartUser, setCartUser] = useState([]);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const checkOutBtn = useRef(null);
@@ -68,9 +71,18 @@ const Cart = () => {
       // dispatch(addOrder(createOrder(cartItems)));
       // setTestID(testID + 1);
       // checkOutLink.current.click();
-      setTimeout(() => navigate("/checkout"), 2000);
+      setTimeout(() => navigate("/checkout"), 1000);
     }
   };
+
+  const fetchCartUser = async () => {
+    const res = await axios.get("http://localhost:8080/api/cart/21/products");
+    setCartUser(res.data);
+  };
+
+  useEffect(() => {
+    fetchCartUser();
+  }, []);
 
   return (
     <Helmet title="Cart">

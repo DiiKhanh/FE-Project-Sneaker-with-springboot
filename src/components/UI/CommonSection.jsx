@@ -18,14 +18,17 @@ const CommonSection = ({ title }) => {
               {
                 key: 1,
                 src: sale1,
+                caption: "Sneaker",
               },
               {
                 key: 2,
                 src: sale,
+                caption: "Sneaker",
               },
               {
                 key: 3,
                 src: sale2,
+                caption: "Sneaker",
               },
             ]}
           />

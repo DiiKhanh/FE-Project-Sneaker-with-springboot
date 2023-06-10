@@ -29,27 +29,29 @@ export const options = {
     },
     title: {
       display: true,
-      text: "Chart.js Line Chart",
+      text: "Thống kê số lượng giày",
     },
   },
 };
 
-const labels = ["January", "February", "March", "April", "May", "June", "July"];
+const labels = ["Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6"];
+const imports = [50, 60, 35, 70];
+const exports = [30, 45, 30, 50];
 
 export const data = {
   labels,
   datasets: [
     {
-      label: "Dataset 1",
-      data: labels.map(() => Math.floor(Math.random() * 1000) + -1000),
+      label: "Số lượng giày đã nhập",
+      data: imports.map((i) => i),
 
       borderColor: "rgb(255, 99, 132)",
       backgroundColor: "rgba(255, 99, 132, 0.5)",
     },
     {
-      label: "Dataset 2",
+      label: "Số lượng giày đã bán",
       // data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-      data: labels.map(() => Math.floor(Math.random() * 1000) + -1000),
+      data: exports.map((i) => i),
 
       borderColor: "rgb(53, 162, 235)",
       backgroundColor: "rgba(53, 162, 235, 0.5)",

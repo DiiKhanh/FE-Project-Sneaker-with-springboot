@@ -90,3 +90,15 @@
   width: 400px;
   height: 400px;
 }
+
+.countup__home {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  column-gap: 0.7rem;
+  border-radius: 5px;
+  cursor: pointer;
+  background: rgba(120, 112, 106, 0.754);
+  transform: none;
+  color: #fff;
+}

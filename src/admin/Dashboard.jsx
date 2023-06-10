@@ -7,10 +7,10 @@ const Dashboard = () => {
   return (
     <section>
       <Container>
-        <div className="mt-3">
-          <h4>Dashboard</h4>
+        <div className="mt-5">
+          <h4>Thống kê chi tiết</h4>
         </div>
-        <Row>
+        <Row style={{ marginLeft: "150px" }}>
           <Chart />
         </Row>
         <div className="chart">

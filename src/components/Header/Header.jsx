@@ -11,7 +11,6 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
-import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -131,10 +130,10 @@ const Header = () => {
             </div>
             {/* icons */}
             <div className="nav__icons">
-              <span className="fav__icon">
+              {/* <span className="fav__icon">
                 <i className="ri-heart-line"></i>
                 <span className="badge">2</span>
-              </span>
+              </span> */}
               {/* cart icon */}
               <span className="cart__icon" onClick={navigateToCart}>
                 <i className="ri-shopping-bag-line"></i>
