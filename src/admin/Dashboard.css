@@ -4,3 +4,42 @@
   margin-left: 150px;
   margin-top: 150px;
 }
+
+.db-container {
+  display: flex;
+  height: 220px;
+  width: 350px;
+  align-items: center;
+  justify-content: space-around;
+  /* margin-left: 100px; */
+}
+.db-bg {
+  background: linear-gradient(90deg, #ffbf96, #fe7096);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.3125rem;
+}
+.db-bg2 {
+  background: linear-gradient(90deg, #90caf9, #047edf 99%);
+}
+.db-bg3 {
+  background: linear-gradient(90deg, #84d9d2, #07cdae);
+}
+
+.db-card {
+  padding: 2.5rem;
+  flex: 1, 1, auto;
+  color: #fff;
+}
+.db-card img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+}

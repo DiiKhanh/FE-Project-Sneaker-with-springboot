@@ -1,7 +1,6 @@
 import React from "react";
 import { Container, Row, Col, Form, FormGroup, Progress } from "reactstrap";
 import Helmet from "../components/Helmet/Helmet";
-import CommonSection from "../components/UI/CommonSection";
 import "../styles/checkout.css";
 import { useDispatch, useSelector } from "react-redux";
 import { clearCart } from "../redux/slices/cartSlice";
@@ -43,15 +42,18 @@ const Checkout = () => {
     );
   };
 
+  const idOrder = randomId();
+
   const createOrder = (cartItems) => {
     const total = cartItems.reduce(
       (accumulateValue, item) => accumulateValue + item.price * item.quantity,
       0
     );
     return {
-      order_id: randomId(),
+      order_id: idOrder,
       orderItems: cartItems,
       totalAmount: total,
+      isPaid: false,
     };
   };
 
@@ -71,19 +73,20 @@ const Checkout = () => {
 
   const checkOut = async () => {
     setModal(false);
-    // const data = {
-    //   to: formEmail.email,
-    //   subject: ``,
-    // };
-    // const res = await axios.post(
-    //   "http://localhost:8080/api/email/send-email",
-
-    //   {
-    //     headers: {
-    //       Authorization: `Bearer ${user?.accessToken}`,
-    //     },
-    //   }
-    // );
+    const data = {
+      to: formEmail.email,
+      subject: `XÁC NHẬN ĐƠN ĐẶT HÀNG #${idOrder}`,
+      message: `Cảm ơn quý khách hàng đã đặt hàng tại SneakerShop. Sneaker shop rất vui thông báo đơn hàng #${idOrder} của quý khách đang trong quá trình xử lý.Quý khách có thể tra cứu tình trạng đơn hàng THÔNG TIN ĐƠN HÀNG .Địa chỉ giao hàng: #${formEmail.address}, số điện thoại: ${formEmail.phone}, Người nhận hàng: ${formEmail.name}`,
+    };
+    const res = await axios.post(
+      "http://localhost:8080/api/email/send-email",
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${user?.accessToken}`,
+        },
+      }
+    );
     // Send order data to server (x)
     if (cartItems.length === 0) return;
     else {
@@ -91,12 +94,20 @@ const Checkout = () => {
       dispatch(clearCart());
       dispatch(addOrder(createOrder(cartItems)));
       setTestID(testID + 1);
+      setFormEmail({
+        email: "",
+        name: "",
+        phone: "",
+        address: "",
+        city: "",
+        postalCode: "",
+        country: "",
+      });
     }
   };
 
   return (
     <Helmet title="Checkout">
-      {/* <CommonSection title="Checkout" /> */}
       <section>
         <Container>
           <Progress
@@ -109,7 +120,7 @@ const Checkout = () => {
             <h6>Chờ thanh toán</h6>
           </Progress>
         </Container>
-        <Container>
+        <Container className="mt-5">
           <Row>
             <Col lg="8">
               <h6 className="fw-bold mb-4">Thông tin hóa đơn</h6>
@@ -225,7 +236,9 @@ const Checkout = () => {
                     vnpay={vnpay}
                     toggle={toggle}
                     modal={modal}
-                    checkOut={checkOut}
+                    formEmail={formEmail}
+                    setFormEmail={setFormEmail}
+                    setModal={setModal}
                   />
                 )}
               </div>
@@ -238,6 +251,59 @@ const Checkout = () => {
 };
 
 const ModalPopup = (props) => {
+  const { formEmail, setFormEmail } = props;
+  const dispatch = useDispatch();
+  const randomId = () => {
+    return (
+      Date.now().toString(36) +
+      Math.floor(
+        Math.pow(10, 12) + Math.random() * 9 * Math.pow(10, 12)
+      ).toString(36)
+    );
+  };
+
+  const idOrder = randomId();
+  const user = useSelector((state) => state.auth?.currentUser);
+
+  const createOrder = (cartItems) => {
+    const total = cartItems.reduce(
+      (accumulateValue, item) => accumulateValue + item.price * item.quantity,
+      0
+    );
+    return {
+      order_id: idOrder,
+      orderItems: cartItems,
+      totalAmount: total,
+      isPaid: true,
+    };
+  };
+  const { cartItems } = useSelector((state) => state.cart);
+  const [testID, setTestID] = useState(4);
+  const checkOut = async () => {
+    const data = {
+      to: formEmail.email,
+      subject: `XÁC NHẬN ĐƠN ĐẶT HÀNG #${idOrder}`,
+      message: `Cảm ơn quý khách hàng đã đặt hàng tại SneakerShop. Sneaker shop rất vui thông báo đơn hàng #${idOrder} của quý khách đang trong quá trình xử lý.Quý khách có thể tra cứu tình trạng đơn hàng. THÔNG TIN ĐƠN HÀNG .Địa chỉ giao hàng: #${formEmail.address}, số điện thoại: ${formEmail.phone}, Người nhận hàng: ${formEmail.name}`,
+    };
+    const res = await axios.post(
+      "http://localhost:8080/api/email/send-email",
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${user?.accessToken}`,
+        },
+      }
+    );
+    // Send order data to server (x)
+    if (cartItems.length === 0) return;
+    else {
+      dispatch(clearCart());
+      dispatch(addOrder(createOrder(cartItems)));
+      toast.success("Đặt hàng thành công");
+      setTestID(testID + 1);
+      setModal(false);
+    }
+  };
   return (
     <div>
       <Modal isOpen={props.modal} toggle={props.toggle} scrollable={true}>
@@ -249,8 +315,8 @@ const ModalPopup = (props) => {
           <Button color="primary">
             <a
               href={props.vnpay}
-              target="_self"
-              onClick={props.checkOut}
+              target="_blank"
+              onClick={checkOut}
               style={{ color: "#fff" }}
             >
               Xác nhận

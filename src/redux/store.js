@@ -1,5 +1,5 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import addProductSlice from "./slices/addProductSlice";
+// import addProductSlice from "./slices/addProductSlice";
 import authSlice from "./slices/authSlice";
 import cartSlice from "./slices/cartSlice";
 import ProductSlice from "./slices/ProductSlice";
@@ -31,7 +31,7 @@ const store = combineReducers({
   // purchased: persistReducer(cartItems, purchasedSlice),
   auth: persistReducer(currentUserConfig, authSlice),
   product: ProductSlice,
-  addProduct: addProductSlice,
+  // addProduct: addProductSlice,
   user: UserSlice,
   managerProduct: managerProductSlice,
 });

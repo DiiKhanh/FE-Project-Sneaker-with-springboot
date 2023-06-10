@@ -2,8 +2,12 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
-  orderList: [],
-  totalSpent: 0,
+  orderList: localStorage.getItem("orderList")
+    ? JSON.parse(localStorage.getItem("orderList"))
+    : [],
+  totalSpent: localStorage.getItem("totalSpent")
+    ? localStorage.getItem("totalSpent")
+    : 0,
   isLoading: false,
 };
 
@@ -15,7 +19,7 @@ export const getUserOrder = createAsyncThunk(
       const res = await axios.get(getUserOrderUrl);
       return res.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue('Something went wrong');
+      return thunkAPI.rejectWithValue("Something went wrong");
     }
   }
 );

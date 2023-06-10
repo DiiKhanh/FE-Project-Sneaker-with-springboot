@@ -19,6 +19,8 @@ export default function PurchasedUser() {
   useEffect(() => {
     dispatch(calculateTotalSpent());
     dispatch(clearCart());
+    localStorage.setItem("orderList", JSON.stringify(orderList));
+    localStorage.setItem("totalSpent", totalSpent);
   }, [orderList]);
 
   // Calling order data from server (x)

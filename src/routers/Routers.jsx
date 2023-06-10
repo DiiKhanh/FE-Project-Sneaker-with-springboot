@@ -18,6 +18,7 @@ import Dashboard from "../admin/Dashboard";
 import UserDashboard from "../admin/user/UserDashboard";
 import ManagerProduct from "../admin/product/ManagerProduct";
 import AuthRoute from "./AuthRoute";
+import ManagerInvoice from "../admin/invoice/ManagerInvoice";
 
 const Routers = () => {
   return (
@@ -54,7 +55,7 @@ const Routers = () => {
         path="dashboard/orders"
         element={
           <AuthRoute>
-            <ManagerProduct />
+            <ManagerInvoice />
           </AuthRoute>
         }
       />

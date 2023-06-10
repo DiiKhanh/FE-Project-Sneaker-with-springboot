@@ -25,6 +25,7 @@ const Cart = () => {
   const [isEmpty, setIsEmpty] = useState(true);
   const [testID, setTestID] = useState(4);
   const [cartUser, setCartUser] = useState([]);
+  const user = useSelector((state) => state.auth?.currentUser);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -75,14 +76,17 @@ const Cart = () => {
     }
   };
 
-  const fetchCartUser = async () => {
-    const res = await axios.get("http://localhost:8080/api/cart/21/products");
-    setCartUser(res.data);
-  };
+  // const fetchCartUser = async () => {
+  //   const res = await axios.get(
+  //     `http://localhost:8080/api/cart/${user?.cartId}/products`
+  //   );
+  //   console.log(res.data);
+  //   setCartUser(res.data);
+  // };
 
-  useEffect(() => {
-    fetchCartUser();
-  }, []);
+  // useEffect(() => {
+  //   fetchCartUser();
+  // }, []);
 
   return (
     <Helmet title="Cart">

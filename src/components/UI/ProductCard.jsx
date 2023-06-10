@@ -16,6 +16,7 @@ const ProductCard = ({ item }) => {
         productName: item.name || item.productName,
         price: item.retail_price_cents || item.productPrice,
         imgUrl: item?.grid_picture_url || item.imgUrl,
+        quantity: 1,
       })
     );
     toast.success("Đã thêm vào giỏ hàng thành công!");

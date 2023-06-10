@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import OrderItem from "./OrderItem";
-
+import { Badge } from "reactstrap";
 export default function PurchasedOrderUser({ order }) {
   const seeMoreBtn = useRef(null);
   const itemsContainer = useRef(null);
@@ -43,6 +43,7 @@ export default function PurchasedOrderUser({ order }) {
           currency: "VND",
         })}
       </h5>
+      {order?.isPaid ? <h5>Đã thanh toán</h5> : <h5>Chưa thanh toán</h5>}
     </li>
   );
 }
