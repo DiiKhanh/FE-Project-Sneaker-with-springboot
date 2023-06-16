@@ -23,8 +23,8 @@ const Dashboard = () => {
                 <h6>Tăng 60%</h6>
               </div>
             </div>
-          </div>
-          <div className="db-container">
+          </div> */}
+        {/* <div className="db-container">
             <div className="db-bg2">
               <div className="db-card">
                 <img src="" alt="" />
@@ -43,8 +43,8 @@ const Dashboard = () => {
                 <h6>Tăng 60%</h6>
               </div>
             </div>
-          </div>
-        </Row> */}
+          </div> */}
+        {/* </Row> */}
         <Row style={{ marginLeft: "150px" }}>
           <Chart />
         </Row>
