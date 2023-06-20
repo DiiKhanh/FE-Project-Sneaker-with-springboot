@@ -1,8 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Container, Row, Col, Breadcrumb, BreadcrumbItem } from "reactstrap";
 import Helmet from "../components/Helmet/Helmet";
-import CommonSection from "../components/UI/CommonSection";
 import "../styles/product-details.css";
 import { motion } from "framer-motion";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
@@ -15,7 +14,6 @@ import size from "../assets/data/sizeArr";
 import axios from "axios";
 import SizeModal from "../components/UI/SizeModal";
 import SelectQuantity from "../components/UI/SelectQuantity";
-import { useCallback } from "react";
 import bannernho from "../assets/images/banner-nho.png";
 
 const ProductDetails = () => {
@@ -55,10 +53,27 @@ const ProductDetails = () => {
         price: item.retail_price_cents || item?.productPrice,
         imgUrl: item?.grid_picture_url || item?.imgUrl,
         quantity: quantity,
+        size: sizeChoice !== undefined ? sizeChoice : 40,
       })
     );
     toast.success("Thêm sản phầm vào giỏ hàng thành công!");
   };
+
+  const navigate = useNavigate();
+  const buyNow = () => {
+    dispatch(
+      cartActions.addItem({
+        id: item?.id,
+        productName: item.name || item?.productName,
+        price: item.retail_price_cents || item?.productPrice,
+        imgUrl: item?.grid_picture_url || item?.imgUrl,
+        quantity: quantity,
+        size: sizeChoice !== undefined ? sizeChoice : 40,
+      })
+    );
+    navigate("/checkout");
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
     const reviewUserName = reviewUser.current.value;
@@ -76,6 +91,7 @@ const ProductDetails = () => {
     window.scrollTo(0, 0);
   }, [item]);
   const [selectIdx, setSelectIdx] = useState(-1);
+  const [sizeChoice, setSizeChoice] = useState();
 
   // handle quantity
   const [quantity, setQuantity] = useState(1);
@@ -102,8 +118,7 @@ const ProductDetails = () => {
 
   return (
     <Helmet title={productName}>
-      {/* <CommonSection title={productName} /> */}
-      <img src={bannernho} alt="" />
+      <img src={bannernho} alt="banner-nho" />
       <section>
         <div style={{ marginLeft: "300px" }}>
           <Breadcrumb>
@@ -201,8 +216,10 @@ const ProductDetails = () => {
                             onClick={() => {
                               if (idx !== selectIdx) {
                                 setSelectIdx(idx);
+                                setSizeChoice(item);
                               } else {
                                 setSelectIdx(-1);
+                                setSizeChoice();
                               }
                             }}
                             className={`mx-2 size-grid ${
@@ -252,19 +269,10 @@ const ProductDetails = () => {
                     whileTap={{ scale: 1.2 }}
                     className="buy__btn"
                     style={{ backgroundColor: "#fb6e2e" }}
-                    onClick={addToCart}
+                    onClick={buyNow}
                   >
                     Mua ngay
                   </motion.button>
-                  {/* <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 1.2 }}
-                    className="buy__btn"
-                    style={{ backgroundColor: "#f4acb7" }}
-                    onClick={addToCart}
-                  >
-                    Yêu thích ❤
-                  </motion.button> */}
                 </div>
               </div>
             </Col>

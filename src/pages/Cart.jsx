@@ -15,8 +15,6 @@ import {
 } from "../redux/slices/cartSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { addOrder } from "../redux/slices/purchasedSlice";
-import axios from "axios";
 
 const Cart = () => {
   const { cartItems, totalAmount, totalQuantity } = useSelector(
@@ -68,25 +66,9 @@ const Cart = () => {
     if (cartItems.length === 0) return;
     else {
       toast.success("Chuyển tới trang thanh toán");
-      // dispatch(clearCart());
-      // dispatch(addOrder(createOrder(cartItems)));
-      // setTestID(testID + 1);
-      // checkOutLink.current.click();
       setTimeout(() => navigate("/checkout"), 1000);
     }
   };
-
-  // const fetchCartUser = async () => {
-  //   const res = await axios.get(
-  //     `http://localhost:8080/api/cart/${user?.cartId}/products`
-  //   );
-  //   console.log(res.data);
-  //   setCartUser(res.data);
-  // };
-
-  // useEffect(() => {
-  //   fetchCartUser();
-  // }, []);
 
   return (
     <Helmet title="Cart">
@@ -121,6 +103,7 @@ const Cart = () => {
                       <th>Tên</th>
                       <th>Giá</th>
                       <th>Số lượng</th>
+                      <th>Size</th>
                       <th>Xóa</th>
                     </tr>
                   </thead>
@@ -187,12 +170,21 @@ const Tr = ({ item }) => {
   const decreaseAmount = () => {
     dispatch(decrease(item.id));
   };
+
+  const navigate = useNavigate();
+
+  const navigateToProduct = () => {
+    navigate(`/shop/${item?.id}`);
+  };
+
   return (
     <tr>
       <td>
-        <img src={item.image} alt="" />
+        <img src={item.image} alt="img-item" />
       </td>
-      <td>{item.productName}</td>
+      <td style={{ cursor: "pointer" }} onClick={navigateToProduct}>
+        {item.productName}
+      </td>
       <td>
         {item.price?.toLocaleString("it-IT", {
           style: "currency",
@@ -204,6 +196,7 @@ const Tr = ({ item }) => {
         {item.quantity}
         <i className="ri-arrow-down-s-line" onClick={decreaseAmount}></i>
       </td>
+      <td>{item?.size}</td>
       <td>
         <motion.i
           whileTap={{ scale: 1.2 }}
